@@ -18,14 +18,14 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
         std::string content_color = "#000";
         std::string link_color = "#007bff";
         std::string preview_color = "#000";
-        std::string preview_background = "#fff";
+        std::string preview_background = "#f0f0f0";
         std::string button_color = "#000";
-        std::string button_background = "#fff";
+        std::string button_background = "#f0f0f0";
         std::string codeblock_color = "#000";
         std::string codeblock_background = "#f0f0f0";
         std::string copybutton_color = "#000";
-        std::string copybutton_background = "#fff";
-        std::string copybutton_hover_color = "#fff";
+        std::string copybutton_background = "#ffffff";
+        std::string copybutton_hover_color = "#ffffff";
     };
 
     Theme dark{

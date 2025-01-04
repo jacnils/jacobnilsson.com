@@ -19,7 +19,7 @@ bygg::HTML::Section Templates::get_generic_footer() {
     using namespace bygg::HTML;
     return Section{Tag::Empty_No_Formatting,
         Section{Tag::Footer, Property{"class", "footer"}, Property{"id", "footer"},
-            Element{Tag::P, "&copy; 2024 Jacob Nilsson"},
+            Element{Tag::P, "&copy; 2024-2025 Jacob Nilsson"},
         },
         Element{Tag::Script, Property{"src", "/js/script.js"}},
     };

@@ -17,7 +17,7 @@ bygg::HTML::Section Sites::get_index_site() {
     content += Element{Tag::H1, Property{"id", "projects-h1"}, "Projects"};
     content += Element{Tag::P, Property{"id", "my-projects-p"}, "Here are some of the projects I've worked on:"};
     content += Templates::get_grid({
-        Templates::get_project_preview({.title = "bygg", .description = "A component-based HTML/CSS builder for C++. Powers this website.", .location = "https://git.jacobnilsson.com/jacob/bygg"}),
+        Templates::get_project_preview({.title = "bygg", .description = "A component-based HTML/CSS builder for C++. Powers this website.", .location = "/bygg.html"}),
         Templates::get_project_preview({.title = "biner", .description = "Command-line utility for combining and separating text files", .location = "https://git.jacobnilsson.com/jacob/biner"}),
     });
     content += Templates::get_grid({
@@ -196,6 +196,79 @@ bygg::HTML::Section Sites::get_the_sad_state_of_music_hoarding_on_ios() {
 
     content += Element{Tag::P, "I don’t know what the point of this was, I just really wanted to note down my thoughts on this. If you’ve had a similar experience to me, I’d love to hear about it."};
     content += Element{Tag::P, "Thank you for reading this pretty wordy rant. Have a great day!"};
+
+    return container;
+}
+
+bygg::HTML::Section Sites::get_bygg_site() {
+    using namespace bygg::HTML;
+    Section container = Templates::get_generic_base_body();
+    Section& content = container.at_section(body_div_id);
+
+    content += Element{Tag::H1, Property{"id", "bygg-h1"}, "bygg"};
+    content += Element{Tag::P, "bygg is a component-based HTML/CSS builder for C++. The library is designed to make it easy to generate HTML and CSS documents in a programmatic way, using C++ code."};
+    content += Element{Tag::P, "The library is designed to be easy to use, while being powerful, extensible and modern. Modern STL-style class design and iterators are used throughout the library."};
+    content += Templates::get_bulletpoint_list({
+        "HTML and CSS document generation and deserialization",
+        "Component-based, modular design",
+        "C++ pseudo-code generation",
+        "Easy to use, with a modern C++ API",
+        "Iterator- and reference-based design for easy manipulation and traversal",
+        "Sensible indentation for pretty-formatting.",
+        "HTML serialization*",
+        "No dependencies, other than the standard library*",
+        "Command-line tool for generating HTML or pseudocode from HTML or Markdown files*",
+        "Windows, macOS, Linux and *BSD support**",
+        "MIT License, allowing for commercial use and modification",
+        "Tested on Windows, macOS and Linux through GitHub Actions, methods unit-tested before commit",
+    });
+    content += Element{Tag::P, "*Serialization and CLI requires the use of libxml2, which is not included in this repository. Tests require the use of Catch2, which is not included in this repository. Markdown support requires pandoc to be installed on the system. Pandoc is not included in this repository."};
+    content += Element{Tag::P, "**Not tested on BSD. bygg is actively tested on Windows, macOS and Linux through GitHub Actions."},
+    content += Element{Tag::H2, Property{"id", "why-bygg"}, "Why bygg?"};
+    content += Element{Tag::P, "The goal of bygg was to bring more maintainability to the HTML and CSS writing process. By using a modular, iterative approach, it is possible to write more in less, and prevent code duplication."};
+    content += Element{Tag::P, "The library is also very easy to use, and the API is designed to be as intuitive as possible. It is also designed to allow for many different code styles, from verbose to concise, and from object-oriented to functional."};
+    content += Element{Tag::H2, Property{"id", "example"}, "Example"};
+    content += Element{Tag::P, "In the Git repository, you can find several examples of how to use bygg, both simple and more complex. Here is a simple example of how to generate a simple HTML document:"};
+    content += Templates::get_codeblock(R"(
+// License: MIT
+// Path: examples/hello-world/hello-world.cpp
+#include <fstream>
+#include <bygg/HTML/HTML.hpp>
+#include <bygg/CSS/property.hpp>
+
+int main() {
+   using namespace bygg::HTML;
+   using CSSProperty = bygg::CSS::Property;
+
+   Section sect{Tag::Html, Properties{Property{"lang", "us"}},
+      Section{Tag::Head,
+         Element{Tag::Title, "Hello world!"},
+         Element{Tag::Meta, Properties{Property{"name", "description"}, Property{"content", "Hello world description!"}}},
+         Element{Tag::Meta, Properties{Property{"name", "viewport"}, Property{"content", "width=device-width, initial-scale=1.0"}}},
+      },
+      Section{Tag::Body,
+         Section{Tag::Div, Properties{Property{"class", "content"}},
+            Element{Tag::H1, "Hello world!"},
+            Element{Tag::P, Properties{Property{"style", static_cast<std::string>(CSSProperty("color", "red"))}}, "This is a red string of text."},
+         },
+      },
+      Section{Tag::Footer,
+         Element{Tag::P, "This is a paragraph in a footer."},
+      },
+   };
+
+   std::ofstream ofs("hello-world.html");
+
+   ofs << sect.get<std::string>(Formatting::Pretty);
+
+   ofs.close();
+}
+    )");
+    content += Element{Tag::P, "In addition, the website you're currently on is generated using bygg. The source code for the website is available on my Git server."};
+    content += Element{Tag::H2, Property{"id", "learn-more"}, "Learn more"};
+    content += Element{Tag::P, "You can learn more about bygg by visiting the <a href=\"https://git.jacobnilsson.com/jacob/bygg\">Git repository</a>."};
+    content += Element{Tag::P, "Tarball releases are also available, but may not be up-to-date."};
+    content += Element{Tag::P, "Documentation may be generated using Doxygen by running <code>cd docs; doxygen</code> in the repository root."};
 
     return container;
 }

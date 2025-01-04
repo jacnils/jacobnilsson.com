@@ -38,7 +38,7 @@ bygg::HTML::Section Templates::get_generic_base_body() {
                 Element{Tag::A, Property{"href", "https://git.jacobnilsson.com/jacob"}, "Projects"},
             },
         },
-        Section{Tag::Div, Property{"id", "content"}, Property{"class", "content"}, Element{Tag::Br}},
+        Section{Tag::Div, Property{"id", "content"}, Property{"class", "content"}},
     };
 }
 

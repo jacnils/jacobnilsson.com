@@ -45,7 +45,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
         .codeblock_color = "#eeeeee",
         .codeblock_background = "#333",
         .copybutton_color = "#eeeeee",
-        .copybutton_background = "#333",
+        .copybutton_background = "#444",
         .copybutton_hover_color = "#444",
     };
     Theme light{};
@@ -87,6 +87,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"color", ColorFormatter(from_hex(theme.top_color)).get(bygg::CSS::ColorFormatting::Rgb)},
                     Property{"display", "flex"},
                     Property{"flex-direction", "column"},
+                    Property{"z-index", "9999"},
                     Property{"align-items", "center"},
                     Property{"transition", "top 0.3s"},
                 },
@@ -103,6 +104,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"display", "flex"},
                     Property{"justify-content", "space-around"},
                     Property{"width", "100%"},
+                    Property{"z-index", "9999"},
                     Property{"background-color", ColorFormatter(from_hex(theme.nav_background)).get(bygg::CSS::ColorFormatting::Rgb)},
                 },
             },
@@ -234,6 +236,46 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"padding-left", "20vw"},
                     Property{"padding-right", "20vw"},
                     Property{"text-align", "left"},
+                },
+            },
+            /* For mobile */
+            Element{"media (max-width: 600px)", Type::Rule,
+                Element{
+                    "preview", Type::Class,
+                    Properties{
+                        Property{"min-width", "100%"},
+                        Property{"max-width", "100%"},
+                        Property{"padding", "5px"},
+                    },
+                },
+                Element{"preview_title", Type::Class,
+                    Properties{
+                        Property{"font-size", "16px"},
+                    },
+                },
+                Element{"content", Type::Class,
+                    Properties{
+                        Property{"padding", "50px 10px 25px"},
+                        Property{"max-width", "90%"},
+                    },
+                },
+                Element{"ul li, ol li", Type::Selector,
+                    Properties{
+                        Property{"padding-left", "10vw"},
+                        Property{"padding-right", "10vw"},
+                    },
+                },
+                Element{"grid", Type::Class,
+                    Properties{
+                        Property{"flex-direction", "column"},
+                        Property{"align-items", "center"},
+                    },
+                },
+                Element{"grid-item", Type::Class,
+                    Properties{
+                        Property{"width", "100%"},
+                        Property{"max-width", "100%"},
+                    },
                 },
             },
         };

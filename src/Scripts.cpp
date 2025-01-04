@@ -6,14 +6,22 @@ std::string Scripts::get_script() {
 window.addEventListener('load', function() {
     const footer = document.querySelector('footer');
     const body = document.body;
+    const nav_bar = document.querySelector('.nav-links');
 
     function set_padding() {
-        const footerHeight = footer.offsetHeight;
-        body.style.paddingBottom = `${footerHeight}px`;
+        const fh = footer.offsetHeight;
+        body.style.paddingBottom = `${fh}px`;
+    }
+
+    function set_nav_bar_padding() {
+        const nh = nav_bar.offsetHeight;
+        body.style.paddingTop = `${nh}px`;
     }
 
     set_padding();
+    set_nav_bar_padding();
     window.addEventListener('resize', set_padding);
+    window.addEventListener('resize', set_nav_bar_padding);
 });
 
 window.addEventListener('scroll', function() {

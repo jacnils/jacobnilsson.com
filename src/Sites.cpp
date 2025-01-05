@@ -8,7 +8,7 @@ bygg::HTML::Section Sites::get_index_site() {
     Section container = Templates::get_generic_base_body();
     Section& content = container.at_section(body_div_id);
 
-    content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Me"}, Property{"width", "60%"}, Property{"height", "60%"}, Property{"style", "border-radius: 10px; margin: 0 auto; display: block;"})};
+    content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Me"}, Property{"width", "482px"}, Property{"height", "362"}, Property{"style", "border-radius: 10px; margin: 0 auto; display: block;"})};
     content += Element{Tag::H1, Property{"id", "hello-world-h1"}, "Hello world!"};
     content += Element{Tag::P, Property{"id", "index-p-1"}, R"(
                 Welcome to Jacob Nilsson's website! I'm an 18 year old student from Sweden interested in

@@ -38,7 +38,7 @@ namespace Templates {
         std::string classes{};
         Mode mode{Mode::Any};
     };
-    bygg::HTML::Section get_generic_header(const std::string&, const std::string& = {});
+    bygg::HTML::Section get_generic_header(const std::string&, const std::string& = {}, const std::string& = {});
     bygg::HTML::Section get_generic_footer();
     bygg::HTML::Section get_generic_base_body();
     bygg::HTML::Section get_blogpost_preview(const BlogPostPreview&);

@@ -70,6 +70,10 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"font-weight", "bold"},
                 },
             },
+            Element{"keyframes slide-up", Type::Rule,
+                Element{"from", Type::Selector, Property{"transform", "translateY(20%)"}, Property{"opacity", "0"}},
+                Element{"to", Type::Selector, Property{"transform", "translateY(0)"}, Property{"opacity", "1"}},
+            },
             Element{"*", Property{"font-family", theme.font}, Property{"scroll-behavior", "smooth"}},
             Element{Tag::Body,
                 Properties{
@@ -122,6 +126,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"text-align", "center"},
                     Property{"max-width", "60%"},
                     Property{"margin", "0 auto"},
+                    Property{"animation", "slide-up 0.5s ease-out forwards"},
                 },
             },
             Element{"content a", Type::Class,

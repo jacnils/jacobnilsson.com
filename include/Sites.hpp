@@ -7,6 +7,7 @@ struct PageProperties {
     std::string name{};
     std::string description{};
     std::string lang{};
+    std::string image{};
 };
 
 namespace Sites {

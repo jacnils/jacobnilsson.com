@@ -1,12 +1,22 @@
 #include <Templates.hpp>
 
-bygg::HTML::Section Templates::get_generic_header(const std::string& title, const std::string& description) {
+bygg::HTML::Section Templates::get_generic_header(const std::string& title, const std::string& description, const std::string& image) {
     using namespace bygg::HTML;
     return Section{Tag::Empty_No_Formatting,
         Section{Tag::Head,
             Element{Tag::Title, title},
+            Element{Tag::Meta, make_properties(Property{"charset", "utf-8"})},
             Element{Tag::Meta, make_properties(Property{"name", "description"}, Property{"content", description})},
             Element{Tag::Meta, make_properties(Property{"name", "viewport"}, Property{"content", "width=device-width, initial-scale=1"})},
+            Element{Tag::Meta, make_properties(Property{"name", "author"}, Property{"content", "Jacob Nilsson"})},
+            Element{Tag::Meta, make_properties(Property{"name", "keywords"}, Property{"content", "Jacob Nilsson, Blog, Programming, C++, Software Development, Politics, Technology, Privacy, Linux, macOS, Apple"})},
+            Element{Tag::Meta, make_properties(Property{"property", "og:title"}, Property{"content", title})},
+            Element{Tag::Meta, make_properties(Property{"property", "og:description"}, Property{"content", description})},
+            Element{Tag::Meta, make_properties(Property{"property", "og:type"}, Property{"content", "website"})},
+            Element{Tag::Meta, make_properties(Property{"property", "og:locale"}, Property{"content", "en_US"})},
+            Element{Tag::Meta, make_properties(Property{"property", "og:site_name"}, Property{"content", "jacobnilsson.com"})},
+            Element{Tag::Meta, make_properties(Property{"property", "og:url"}, Property{"content", "https://jacobnilsson.com"})},
+            (image.empty() ? Element() : Element{Tag::Meta, make_properties(Property{"property", "og:image"}, Property{"content", image})}),
             Element{Tag::Link, make_properties(Property{"rel", "stylesheet"}, Property{"href", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"})},
             Element{Tag::Script, make_properties(Property{"src", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"})},
             Element{Tag::Script, "hljs.highlightAll();"},
@@ -39,6 +49,7 @@ bygg::HTML::Section Templates::get_generic_base_body() {
             },
         },
         Section{Tag::Div, Property{"id", "content"}, Property{"class", "content"}},
+        Templates::get_generic_footer(),
     };
 }
 

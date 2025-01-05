@@ -16,6 +16,7 @@ static const std::vector<std::pair<std::string, std::string>> copy_files{
     {"img/bsky.svg", "out/img/bsky.svg"},
     {"img/mail.svg", "out/img/mail.svg"},
     {"img/git.svg", "out/img/git.svg"},
+    {"img/picture.jpeg", "out/img/picture.jpeg"},
 };
 
 // CSS files to generate from bygg::CSS::Stylesheet
@@ -32,12 +33,12 @@ static const std::vector<std::tuple<std::string, std::string>> js_files{
 // Website tree to generate
 // Tuple format: {output file, HTML section, page properties, generate header/footer}
 static const std::vector<std::tuple<std::string, bygg::HTML::Section, PageProperties, bool>> website_tree{
-    {"out/index.html", Sites::get_index_site(), PageProperties{"Welcome to Jacob Nilsson's personal website", "Welcome to Jacob Nilsson's website! I'm an 18 year old student from Sweden interested in computers, programming, politics and whatever else I happen to find interest in.", "en"}, true},
-    {"out/about.html", Sites::get_about_me_site(), PageProperties{"About Jacob Nilsson", "I’m Jacob Nilsson, an 18 year old student, programmer, whatever.", "en"}, true},
-    {"out/blog.html", Sites::get_blog_site(), PageProperties{"Jacob Nilsson's blog", "I like to write blog posts about things I find interesting sometimes.", "en"}, true},
-    {"out/blog/macos-passwords-app-crash-bug.html", Sites::get_macos_passwords_app_crash_bug(), PageProperties{"macOS Passwords App Crash Bug", "A while ago I discovered a pretty silly bug in macOS’s brand new Passwords app. If you’re not aware, it was introduced in the new macOS version - Sequoia. I’m rather surprised this one slipped through the cracks, because it really isn’t hard at all to find, and can be consistently replicated too.", "en"}, true},
-    {"out/blog/the-sad-state-of-music-hoarding-on-ios.html", Sites::get_the_sad_state_of_music_hoarding_on_ios(), PageProperties{"Rant: The sad state of music hoarding on iOS", "I'm the one weirdo who prefers digital music, but in the form of files, and not streaming. Asterisk, because I do stream music, it's just that it's from my own collection through SMB. This solution works great for me, especially since I'm almost always connected to a good internet connection and I have unlimited 5G data. Even the large FLAC files stream without a hitch. It works great on my Mac, or any device really. You can just open a file as if it's a local file and it will start playing.", "en"}, true},
-    {"out/bygg.html", Sites::get_bygg_site(), PageProperties{"bygg for modern C++", "bygg is a component-based HTML/CSS builder for C++", "en"}, true},
+    {"out/index.html", Sites::get_index_site(), PageProperties{.lang = "en"}, true},
+    {"out/about.html", Sites::get_about_me_site(), PageProperties{.lang = "en"}, true},
+    {"out/blog.html", Sites::get_blog_site(), PageProperties{.lang = "en"}, true},
+    {"out/blog/macos-passwords-app-crash-bug.html", Sites::get_macos_passwords_app_crash_bug(), PageProperties{.lang = "en"}, true},
+    {"out/blog/the-sad-state-of-music-hoarding-on-ios.html", Sites::get_the_sad_state_of_music_hoarding_on_ios(), PageProperties{.lang = "en"}, true},
+    {"out/bygg.html", Sites::get_bygg_site(), PageProperties{.lang = "en"}, true},
 };
 
 // Main function; calls the generation functions
@@ -67,7 +68,7 @@ int main(int argc, char** argv) {
         std::filesystem::copy(first, second, std::filesystem::copy_options::overwrite_existing, ec);
 
         if (ec) {
-            throw std::runtime_error("Failed to copy file: " + first + " to " + second + " - " + ec.message());
+            throw std::runtime_error("Failed to copy file: " + first + " to " + second + " - " + ec.message()); // NOLINT
         }
     }
     for (const auto& it : website_tree) {
@@ -81,9 +82,131 @@ int main(int argc, char** argv) {
             endpoint.close();
             continue;
         }
-        root += Templates::get_generic_header(std::get<2>(it).name, std::get<2>(it).description);
-        root += std::get<1>(it);
-        root += Templates::get_generic_footer();
+
+        const auto trim_n = [](const std::string& str, const size_t n) -> std::string {
+            if (str.length() > n) {
+                return str.substr(0, n - 3) + "...";
+            }
+            return str;
+        };
+
+        const auto cleanup_indentation = [](const std::string& str) -> std::string {
+            std::string ret{str};
+
+            // also remove tabs and newlines
+            ret.erase(std::remove(ret.begin(), ret.end(), '\n'), ret.end());
+            ret.erase(std::remove(ret.begin(), ret.end(), '\t'), ret.end());
+
+            // remove multiple spaces and ensure the first element and last element are not spaces
+            ret.erase(std::unique(ret.begin(), ret.end(), [](char a, char b) { return a == ' ' && b == ' '; }), ret.end());
+            if (!ret.empty() && ret.front() == ' ') {
+                ret.erase(ret.begin());
+            }
+            if (!ret.empty() && ret.back() == ' ') {
+                ret.pop_back();
+            }
+            return ret;
+        };
+
+        const auto remove_tags = [](const std::string& str) -> std::string {
+            std::string ret;
+            bool in_tag{false};
+            for (const auto& it : str) {
+                if (it == '<') {
+                    in_tag = true;
+                } else if (it == '>') {
+                    in_tag = false;
+                } else if (!in_tag) {
+                    ret += it;
+                }
+            }
+
+            return ret;
+        };
+
+        const auto page = std::get<1>(it);
+
+        std::string title{std::get<2>(it).name};
+        std::string description{std::get<2>(it).description};
+        std::string image{std::get<2>(it).image};
+
+        for (const auto& _it : page) {
+            if (std::holds_alternative<bygg::HTML::Element>(_it) && description.empty()) {
+                const auto& element = std::get<bygg::HTML::Element>(_it);
+                if (element.get_tag() == "p") {
+                    description = trim_n(cleanup_indentation(element.get_data()), 300);
+                    break;
+                }
+            } else if (std::holds_alternative<bygg::HTML::Section>(_it) && description.empty()) {
+                const auto& section = std::get<bygg::HTML::Section>(_it);
+                for (const auto& it_deep : section) {
+                    if (std::holds_alternative<bygg::HTML::Element>(it_deep)) {
+                        const auto& element = std::get<bygg::HTML::Element>(it_deep);
+                        if (element.get_tag() == "p") {
+                            description = trim_n(cleanup_indentation(element.get_data()), 300);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (const auto& _it : page) {
+            if (std::holds_alternative<bygg::HTML::Element>(_it) && title.empty()) {
+                const auto& element = std::get<bygg::HTML::Element>(_it);
+                if (element.get_tag() == "h1" || element.get_tag() == "h2") {
+                    title = trim_n(element.get_data(), 50);
+                    break;
+                }
+            } else if (std::holds_alternative<bygg::HTML::Section>(_it) && title.empty()) {
+                const auto& section = std::get<bygg::HTML::Section>(_it);
+                for (const auto& it_deep : section) {
+                    if (std::holds_alternative<bygg::HTML::Element>(it_deep)) {
+                        const auto& element = std::get<bygg::HTML::Element>(it_deep);
+                        if (element.get_tag() == "h1" || element.get_tag() == "h2") {
+                            title = trim_n(element.get_data(), 50);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (const auto& _it : page) {
+            if (std::holds_alternative<bygg::HTML::Element>(_it) && image.empty()) {
+                const auto& element = std::get<bygg::HTML::Element>(_it);
+                if (element.get_tag() == "img") {
+                    for (const auto& it_deep : element.get_properties()) {
+                        if (it_deep.get_key() == "src") {
+                            image = it_deep.get_value();
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            } else if (std::holds_alternative<bygg::HTML::Section>(_it) && image.empty()) {
+                const auto& section = std::get<bygg::HTML::Section>(_it);
+                for (const auto& it_deep : section) {
+                    if (std::holds_alternative<bygg::HTML::Element>(it_deep)) {
+                        const auto& element = std::get<bygg::HTML::Element>(it_deep);
+                        if (element.get_tag() == "img") {
+                            for (const auto& it_deep : element.get_properties()) {
+                                if (it_deep.get_key() == "src") {
+                                    image = it_deep.get_value();
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        root += Templates::get_generic_header(remove_tags(title), remove_tags(description), remove_tags(image));
+        root += page;
 
         endpoint.open();
         endpoint.append_string(bygg::HTML::Document(root).get<std::string>(bygg::HTML::Formatting::Pretty));

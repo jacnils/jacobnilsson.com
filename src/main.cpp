@@ -34,6 +34,7 @@ static const std::vector<std::tuple<std::string, std::string>> js_files{
 // Tuple format: {output file, HTML section, page properties, generate header/footer}
 static const std::vector<std::tuple<std::string, bygg::HTML::Section, PageProperties, bool>> website_tree{
     {"out/index.html", Sites::get_index_site(), PageProperties{.lang = "en"}, true},
+    {"out/settings.html", Sites::get_settings_site(), PageProperties{.lang = "en"}, true},
     {"out/about.html", Sites::get_about_me_site(), PageProperties{.lang = "en"}, true},
     {"out/blog.html", Sites::get_blog_site(), PageProperties{.lang = "en"}, true},
     {"out/blog/macos-passwords-app-crash-bug.html", Sites::get_macos_passwords_app_crash_bug(), PageProperties{.lang = "en"}, true},
@@ -130,80 +131,55 @@ int main(int argc, char** argv) {
         std::string description{std::get<2>(it).description};
         std::string image{std::get<2>(it).image};
 
-        for (const auto& _it : page) {
-            if (std::holds_alternative<bygg::HTML::Element>(_it) && description.empty()) {
-                const auto& element = std::get<bygg::HTML::Element>(_it);
-                if (element.get_tag() == "p") {
-                    description = trim_n(cleanup_indentation(element.get_data()), 300);
-                    break;
-                }
-            } else if (std::holds_alternative<bygg::HTML::Section>(_it) && description.empty()) {
-                const auto& section = std::get<bygg::HTML::Section>(_it);
-                for (const auto& it_deep : section) {
-                    if (std::holds_alternative<bygg::HTML::Element>(it_deep)) {
-                        const auto& element = std::get<bygg::HTML::Element>(it_deep);
-                        if (element.get_tag() == "p") {
-                            description = trim_n(cleanup_indentation(element.get_data()), 300);
-                            break;
-                        }
+        std::function<void(const bygg::HTML::Section&, std::string&)> extract_description = [&cleanup_indentation, &trim_n, &extract_description](const auto& section, std::string& description) {
+            for (const auto& _it : section) {
+                if (std::holds_alternative<bygg::HTML::Element>(_it) && description.empty()) {
+                    const auto& element = std::get<bygg::HTML::Element>(_it);
+                    if (element.get_tag() == "p") {
+                        description = trim_n(cleanup_indentation(element.get_data()), 300);
+                        return;
                     }
+                } else if (std::holds_alternative<bygg::HTML::Section>(_it) && description.empty()) {
+                    extract_description(std::get<bygg::HTML::Section>(_it), description);
                 }
             }
-        }
+        };
 
-        for (const auto& _it : page) {
-            if (std::holds_alternative<bygg::HTML::Element>(_it) && title.empty()) {
-                const auto& element = std::get<bygg::HTML::Element>(_it);
-                if (element.get_tag() == "h1" || element.get_tag() == "h2") {
-                    title = trim_n(element.get_data(), 50);
-                    break;
-                }
-            } else if (std::holds_alternative<bygg::HTML::Section>(_it) && title.empty()) {
-                const auto& section = std::get<bygg::HTML::Section>(_it);
-                for (const auto& it_deep : section) {
-                    if (std::holds_alternative<bygg::HTML::Element>(it_deep)) {
-                        const auto& element = std::get<bygg::HTML::Element>(it_deep);
-                        if (element.get_tag() == "h1" || element.get_tag() == "h2") {
-                            title = trim_n(element.get_data(), 50);
-                            break;
-                        }
+        std::function<void(const bygg::HTML::Section&, std::string&)> extract_title = [&trim_n, &extract_title](const auto& section, std::string& title) {
+            for (const auto& _it : section) {
+                if (std::holds_alternative<bygg::HTML::Element>(_it) && title.empty()) {
+                    const auto& element = std::get<bygg::HTML::Element>(_it);
+                    if (element.get_tag() == "h1") {
+                        title = trim_n(element.get_data(), 50);
+                        return;
                     }
+                } else if (std::holds_alternative<bygg::HTML::Section>(_it) && title.empty()) {
+                    extract_title(std::get<bygg::HTML::Section>(_it), title);
                 }
             }
-        }
+        };
 
-        for (const auto& _it : page) {
-            if (std::holds_alternative<bygg::HTML::Element>(_it) && image.empty()) {
-                const auto& element = std::get<bygg::HTML::Element>(_it);
-                if (element.get_tag() == "img") {
-                    for (const auto& it_deep : element.get_properties()) {
-                        if (it_deep.get_key() == "src") {
-                            image = it_deep.get_value();
-                            break;
-                        }
-                    }
-
-                    break;
-                }
-            } else if (std::holds_alternative<bygg::HTML::Section>(_it) && image.empty()) {
-                const auto& section = std::get<bygg::HTML::Section>(_it);
-                for (const auto& it_deep : section) {
-                    if (std::holds_alternative<bygg::HTML::Element>(it_deep)) {
-                        const auto& element = std::get<bygg::HTML::Element>(it_deep);
-                        if (element.get_tag() == "img") {
-                            for (const auto& it_deep : element.get_properties()) {
-                                if (it_deep.get_key() == "src") {
-                                    image = it_deep.get_value();
-                                    break;
-                                }
+        std::function<void(const bygg::HTML::Section&, std::string&)> extract_image = [&extract_image](const auto& section, std::string& image) {
+            for (const auto& _it : section) {
+                if (std::holds_alternative<bygg::HTML::Element>(_it) && image.empty()) {
+                    const auto& element = std::get<bygg::HTML::Element>(_it);
+                    if (element.get_tag() == "img") {
+                        for (const auto& it_deep : element.get_properties()) {
+                            if (it_deep.get_key() == "src") {
+                                image = it_deep.get_value();
+                                return;
                             }
-
-                            break;
                         }
                     }
+                } else if (std::holds_alternative<bygg::HTML::Section>(_it) && image.empty()) {
+                    extract_image(std::get<bygg::HTML::Section>(_it), image);
                 }
             }
-        }
+        };
+
+        extract_description(page, description);
+        extract_title(page, title);
+        extract_image(page, image);
 
         root += Templates::get_generic_header(remove_tags(title), remove_tags(description), remove_tags(image));
         root += page;

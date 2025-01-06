@@ -30,6 +30,7 @@ bygg::HTML::Section Templates::get_generic_footer() {
     return Section{Tag::Empty_No_Formatting,
         Section{Tag::Footer, Property{"class", "footer"}, Property{"id", "footer"},
             Element{Tag::P, "&copy; 2024-2025 Jacob Nilsson"},
+            Element{Tag::Button, Properties{Property{"onclick", "location.href='/settings.html'"}, Property{"style", "font-size: 20px; background: transparent; float: right; margin-right: 20px;"}}, "⚙"}
         },
         Element{Tag::Script, Property{"src", "/js/script.js"}},
     };
@@ -41,14 +42,20 @@ bygg::HTML::Section Templates::get_generic_base_body() {
         Section{Tag::Div, make_properties(Property{"class", "top-bar"}, Property{"id", "topBar"}),
             Element{Tag::Div, Property{"class", "header"}, "<a href=\"/\">jacobnilsson.com</a>"},
             Section{Tag::Div, Property{"class", "nav-links"},
-                Element{Tag::A, Property{"href", "/"}, "Home"},
-                Element{Tag::A, Property{"href", "/about.html"}, "About me"},
-                Element{Tag::A, Property{"href", "/#contact-h1"}, "Contact"},
-                Element{Tag::A, Property{"href", "/blog.html"}, "Blog"},
-                Element{Tag::A, Property{"href", "https://git.jacobnilsson.com/jacob"}, "Projects"},
+                Element{Tag::A, make_properties(Property{"href", "/"}, Property{"class", "english"}), "Home"},
+                Element{Tag::A, make_properties(Property{"href", "/about.html"}, Property{"class", "english"}), "About me"},
+                Element{Tag::A, make_properties(Property{"href", "/#contact-h1"}, Property{"class", "english"}), "Contact"},
+                Element{Tag::A, make_properties(Property{"href", "/blog.html"}, Property{"class", "english"}), "Blog"},
+                Element{Tag::A, make_properties(Property{"href", "https://git.jacobnilsson.com/jacob"}, Property{"class", "english"}), "Projects"},
+                Element{Tag::A, make_properties(Property{"href", "/"}, Property{"class", "swedish"}), "Hem"},
+                Element{Tag::A, make_properties(Property{"href", "/about.html"}, Property{"class", "swedish"}), "Om mig"},
+                Element{Tag::A, make_properties(Property{"href", "/#contact-h1"}, Property{"class", "swedish"}), "Kontakt"},
+                Element{Tag::A, make_properties(Property{"href", "/blog.html"}, Property{"class", "swedish"}), "Blogg"},
+                Element{Tag::A, make_properties(Property{"href", "https://git.jacobnilsson.com/jacob"}, Property{"class", "swedish"}), "Projekt"},
             },
         },
         Section{Tag::Div, Property{"id", "content"}, Property{"class", "content"}},
+        Section{Tag::Div, Property{"id", "swedish-content"}, Property{"class", "content swedish-content"}},
         Templates::get_generic_footer(),
     };
 }
@@ -100,6 +107,19 @@ bygg::HTML::Section Templates::get_image_link(const ImageLink& il) {
         },
     };
 }
+
+bygg::HTML::Section Templates::get_image_link_preview(const ImageLinkPreview& il) {
+    using namespace bygg::HTML;
+    return Section{Tag::Div, Property{"class", (il.mode == Mode::Dark ? "image-link-preview dark" : il.mode == Mode::Light ? "image-link-preview light" : "image-link-preview")}, Property{"style", il.text_pos == Pos::Left ? "text-align: left;" : il.text_pos == Pos::Right ? "text-align: right;" : "text-align: center;"},
+        Section{Tag::Span, Property{"id", il.id}, Property{"class", il.classes + (il.mode == Mode::Dark ? (il.classes.empty() ? "dark" : " dark") : il.mode == Mode::Light ? (il.classes.empty() ? "light" : " light") : "")},
+            Section{Tag::A, Property{"href", il.location},
+                Element{Tag::Img, make_properties(Property{"src", il.image_location}, Property{"alt", il.alt}, Property{"width", "16"}, Property{"height", "16"}, Property{"style", (il.image_pos == Pos::Left ? "transform: translate(-10%, +20%); float: left; margin-right: 10px;" : il.image_pos == Pos::Right ? "transform: translate(-10%, +20%); float: right; margin-left: 10px;" : "transform: translate(-10%, +20%);")})},
+                Element{Tag::Empty, il.text + "<br>\n"},
+            },
+        },
+    };
+}
+
 
 bygg::HTML::Section Templates::get_spoiler(const bygg::HTML::Section& content) {
     using namespace bygg::HTML;
@@ -162,5 +182,17 @@ bygg::HTML::Section Templates::get_blogpost_header(const BlogPostHeader& header)
         Element{Tag::Small, Property{"class", "blogpost-author"}, "by " + header.author + " • "},
         Element{Tag::Small, Property{"class", "blogpost-date"}, header.date + " • "},
         Element{Tag::Small, Property{"class", "blogpost-tags"}, header.tags},
+    };
+}
+
+bygg::HTML::Section Templates::get_top_notice(const Notice& notice) {
+    using namespace bygg::HTML;
+
+    Property property{"class", std::string(notice.classes.empty() ? "top-notice" : ("top-notice " + notice.classes))};
+    return Section{Tag::Empty_No_Formatting,
+        Element{Tag::Div, make_properties(property, Property{"style", "color: " + notice.color + "; background-color: " + notice.background + ";"}),
+            notice.text +
+            "<button onclick=\"this.parentElement.style.display='none'; set_cookie('lang', 'en', 365);\" style=\"float:right; margin-right:30px; background-color:" + notice.background + "; color:" + notice.color + ";\">✕</button>"
+        }
     };
 }

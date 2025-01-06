@@ -91,7 +91,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"color", ColorFormatter(from_hex(theme.top_color)).get(bygg::CSS::ColorFormatting::Rgb)},
                     Property{"display", "flex"},
                     Property{"flex-direction", "column"},
-                    Property{"z-index", "9999"},
+                    Property{"z-index", "9998"},
                     Property{"align-items", "center"},
                     Property{"transition", "top 0.3s"},
                 },
@@ -160,10 +160,41 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"cursor", "pointer"},
                 },
             },
+            Element{"preview", Type::Class, "hover",
+                Properties{
+                    Property{"transform", "scale(1.05)"},
+                    Property{"transition", "transform 0.3s ease"},
+                },
+            },
             Element{"preview_title", Type::Class,
                 Properties{
                     Property{"font-size", "20px"},
                     Property{"margin", "0"},
+                },
+            },
+            Element{"image-link-preview", Type::Class,
+                Properties{
+                    Property{"color", ColorFormatter(from_hex(theme.preview_color)).get(bygg::CSS::ColorFormatting::Rgb)},
+                    Property{"background-color", ColorFormatter(from_hex(theme.preview_background)).get(bygg::CSS::ColorFormatting::Rgb)},
+                    Property{"border-radius", "10px"},
+                    Property{"padding", "10px"},
+                    Property{"margin-top", "10px"},
+                    Property{"margin-left", "auto"},
+                    Property{"margin-right", "auto"},
+                    Property{"min-width", "300px"},
+                    Property{"max-width", "300px"},
+                    Property{"cursor", "pointer"},
+                },
+            },
+            Element{"image-link-preview a", Type::Class,
+                Properties{
+                    Property{"color", ColorFormatter(from_hex(theme.preview_color)).get(bygg::CSS::ColorFormatting::Rgb)},
+                },
+            },
+            Element{"image-link-preview", Type::Class, "hover",
+                Properties{
+                    Property{"transform", "scale(1.05)"},
+                    Property{"transition", "transform 0.3s ease"},
                 },
             },
             Element{"grid", Type::Class,
@@ -186,6 +217,14 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"-webkit-user-select", "none"},
                     Property{"-moz-user-select", "none"},
                     Property{"-ms-user-select", "none"},
+                },
+            },
+            Element{"img", Type::Selector,
+                Properties{
+                    Property{"margin-left", "auto"},
+                    Property{"margin-right", "auto"},
+                    Property{"max-width", "90%"},
+                    Property{"border-radius", "10px"},
                 },
             },
             Element{"spoiler", Type::Class, Property{"opacity", "0.5"}, Property{"transition", "opacity 0.5s ease"}, Property{"filter", "blur(5px)"}},
@@ -243,10 +282,18 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"text-align", "left"},
                 },
             },
+            Element{"top-notice", Type::Class,
+                Properties{
+                    Property{"width", "100%"},
+                    Property{"padding", "10px"},
+                    Property{"padding-left", "30px"}, // jank, I don't know why it's not working
+                    Property{"text-align", "left"},
+                },
+            },
             /* For mobile */
             Element{"media (max-width: 600px)", Type::Rule,
                 Element{
-                    "preview", Type::Class,
+                    "preview, .image-link-preview", Type::Class,
                     Properties{
                         Property{"min-width", "100%"},
                         Property{"max-width", "100%"},
@@ -282,20 +329,25 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                         Property{"max-width", "100%"},
                     },
                 },
+                Element{"content, .swedish, .english", Type::Class,
+                    Properties{
+                        {"display", "none"},
+                    },
+                },
             },
         };
     }
 
     Element dark_mode_element{"media (prefers-color-scheme: dark)", Type::Rule};
-    dark_mode_element.push_back(Element{"dark", Type::Class, Property{"display", "block"}});
-    dark_mode_element.push_back(Element{"light", Type::Class, Property{"display", "none"}});
+    dark_mode_element.push_back(Element{"dark", Type::Class, Property{"display", "block"}, Property{"background-color", "auto"}});
+    dark_mode_element.push_back(Element{"light", Type::Class, Property{"display", "none"}, Property{"background-color", "none"}});
     for (const auto& it : dark_l) {
         dark_mode_element.push_back(it);
     }
 
     Stylesheet css{};
-    css.push_back(Element{"light", Type::Class, Property{"display", "block"}});
-    css.push_back(Element{"dark", Type::Class, Property{"display", "none"}});
+    css.push_back(Element{"light", Type::Class, Property{"display", "block"}, Property{"background-color", "auto"}});
+    css.push_back(Element{"dark", Type::Class, Property{"display", "none"}, Property{"background-color", "none"}});
     for (const auto& it : light_l) {
         css.push_back(it);
     }

@@ -12,6 +12,7 @@ struct PageProperties {
 
 namespace Sites {
     bygg::HTML::Section get_index_site();
+    bygg::HTML::Section get_settings_site();
     bygg::HTML::Section get_about_me_site();
     bygg::HTML::Section get_blog_site();
     bygg::HTML::Section get_macos_passwords_app_crash_bug();

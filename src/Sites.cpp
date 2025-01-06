@@ -2,13 +2,16 @@
 #include <Templates.hpp>
 
 static constexpr int body_div_id = 1;
+static constexpr int swedish_body_div_id = 2;
 
 bygg::HTML::Section Sites::get_index_site() {
     using namespace bygg::HTML;
     Section container = Templates::get_generic_base_body();
     Section& content = container.at_section(body_div_id);
 
-    content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Me"}, Property{"width", "482px"}, Property{"height", "362"}, Property{"style", "border-radius: 10px; margin: 0 auto; display: block;"})};
+    content += Templates::get_top_notice({.background = "#feffd6", .color = "#721c24", .text = "🇸🇪 Webbsidan finns tillgänglig på svenska. <a href=\"/settings.html\">Ändra språk</a>.", .classes = "english no-lang"});
+    content += Templates::get_top_notice({.background = "#feffd6", .color = "#721c24", .text = "🇺🇸 The website is also available in English <a href=\"/settings.html\">Change language</a>.", .classes = "swedish no-lang"});
+    content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Me"})};
     content += Element{Tag::H1, Property{"id", "hello-world-h1"}, "Hello world!"};
     content += Element{Tag::P, Property{"id", "index-p-1"}, R"(
                 Welcome to Jacob Nilsson's website! I'm an 18 year old student from Sweden interested in
@@ -28,15 +31,40 @@ bygg::HTML::Section Sites::get_index_site() {
     content += Element{Tag::P, Property{"id", "more-projects-p"}, "<em>For more projects, see my Git server and GitHub.</em>"};
     content += Element{Tag::H1, Property{"id", "contact-h1"}, "Contact"};
     content += Element{Tag::P, Property{"id", "contact-p"}, "You can contact me using any of the following methods:"};
-    content += Templates::get_image_link({.mode = Templates::Mode::Any, .image_location = "/img/git.svg", .text = "Git server", .location = "https://git.jacobnilsson.com/jacob", .alt = "Git Logo"});
-    content += Templates::get_image_link({.mode = Templates::Mode::Any, .image_location = "/img/mail.svg", .text = "Email me", .location = "mailto:jacob@jacobnilsson.com", .alt = "Email Logo"});
-    content += Templates::get_image_link({.mode = Templates::Mode::Any, .image_location = "/img/bsky.svg", .text = "Bluesky", .location = "https://bsky.app/profile/jacobnilsson.com", .alt = "Bluesky Logo"});
-    content += Templates::get_image_link({.mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
-    content += Templates::get_image_link({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
+    content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/git.svg", .text = "Git server", .location = "https://git.jacobnilsson.com/jacob", .alt = "Git Logo"});
+    content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/mail.svg", .text = "Email me", .location = "mailto:jacob@jacobnilsson.com", .alt = "Email Logo"});
+    content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/bsky.svg", .text = "Bluesky", .location = "https://bsky.app/profile/jacobnilsson.com", .alt = "Bluesky Logo"});
+    content += Templates::get_image_link_preview({.mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
+    content += Templates::get_image_link_preview({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
     content += Element{Tag::P, Property{"id", "contact-p-2"}, "<em>I also have a Discord. If you want to contact me on there, please email me first.</em>"};
 
     return container;
 }
+
+bygg::HTML::Section Sites::get_settings_site() {
+    using namespace bygg::HTML;
+    Section container = Templates::get_generic_base_body();
+    Section& content = container.at_section(body_div_id);
+
+    content += Element{Tag::H1, Property{"id", "settings-h1"}, "Settings"};
+    content += Element{Tag::H2, Property{"id", "language-h2"}, "Language"};
+    content += Section{Tag::Select, Property{"class", "language-select"},
+        Element{Tag::Option, Property{"value", "en"}, "English"},
+        Element{Tag::Option, Property{"value", "sv"}, "Svenska"},
+    };
+
+    Section& swedish_content = container.at_section(swedish_body_div_id);
+
+    swedish_content += Element{Tag::H1, Property{"id", "settings-h1"}, "Inställningar"};
+    swedish_content += Element{Tag::H2, Property{"id", "language-h2"}, "Språk"};
+    swedish_content += Section{Tag::Select, Property{"class", "language-select"},
+        Element{Tag::Option, Property{"value", "en"}, "English"},
+        Element{Tag::Option, Property{"value", "sv"}, "Svenska"},
+    };
+
+    return container;
+}
+
 
 bygg::HTML::Section Sites::get_about_me_site() {
     using namespace bygg::HTML;

@@ -45,23 +45,19 @@ window.addEventListener('load', function() {
         footer.classList.add('visible');
     }
 
-    function set_padding() {
-        const fh = footer.offsetHeight;
-        body.style.paddingBottom = `${fh}px`;
-    }
-
-    function set_nav_bar_padding() {
-        const nh = nav_bar.offsetHeight;
-        body.style.paddingTop = `${nh}px`;
-    }
-
-    set_padding();
-    set_nav_bar_padding();
-    window.addEventListener('resize', set_padding);
-    window.addEventListener('resize', set_nav_bar_padding);
-
-    let preferred_lang = get_cookie('lang');
-    if (preferred_lang !== "sv") {
+    let preferred_lang;
+    if (cookie_exists('lang')) {
+        preferred_lang = get_cookie('lang');
+        if (preferred_lang !== "sv") {
+            preferred_lang = "en";
+        }
+    } else {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (timezone === 'Europe/Stockholm') {
+            preferred_lang = "sv";
+        } else {
+            preferred_lang = "en";
+        }
         preferred_lang = "en";
     }
     preferred_lang = preferred_lang === "sv" ? true : false;
@@ -98,7 +94,7 @@ window.addEventListener('load', function() {
             set_cookie('lang', lang.value, 365);
             location.reload();
         });
-        lang.value = preferred_lang ? 'sv' : 'en';
+        lang.value = _preferred_lang ? 'sv' : 'en';
     });
 
     if (_preferred_lang) {
@@ -117,13 +113,48 @@ window.addEventListener('load', function() {
         });
     }
 
-    // this must be at the end of the load event
+    // handle the EU cookie notice
+    const in_eu = Intl.DateTimeFormat().resolvedOptions().timeZone.startsWith("Europe");
+    if (in_eu && !cookie_exists('eu')) {
+        const eu = document.querySelectorAll('.eu');
+        eu.forEach(element => {
+            // check if its class matches the current language
+            if (element.classList.contains('swedish') && _preferred_lang) {
+                element.style.display = 'block';
+            } else if (element.classList.contains('english') && !_preferred_lang) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        });
+    } else {
+        const eu = document.querySelectorAll('.eu');
+        eu.forEach(element => {
+            element.style.display = 'none';
+        });
+    }
+
     if (cookie_exists('lang')) {
         const no_lang = document.querySelectorAll('.no-lang');
         no_lang.forEach(element => {
             element.style.display = 'none';
         });
     }
+
+    function set_padding() {
+        const fh = footer.offsetHeight;
+        body.style.paddingBottom = `${fh}px`;
+    }
+
+    function set_nav_bar_padding() {
+        const nh = nav_bar.offsetHeight;
+        body.style.paddingTop = `${nh}px`;
+    }
+
+    set_padding();
+    set_nav_bar_padding();
+    window.addEventListener('resize', set_padding);
+    window.addEventListener('resize', set_nav_bar_padding);
 });
 
 window.addEventListener('scroll', function() {

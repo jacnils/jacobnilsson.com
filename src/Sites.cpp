@@ -9,8 +9,6 @@ bygg::HTML::Section Sites::get_index_site() {
     Section container = Templates::get_generic_base_body();
     Section& content = container.at_section(body_div_id);
 
-    content += Templates::get_top_notice({.background = "#feffd6", .color = "#721c24", .text = "🇸🇪 Webbsidan finns tillgänglig på svenska. <a href=\"/settings.html\">Ändra språk</a>.", .classes = "english no-lang"});
-    content += Templates::get_top_notice({.background = "#feffd6", .color = "#721c24", .text = "🇺🇸 The website is also available in English <a href=\"/settings.html\">Change language</a>.", .classes = "swedish no-lang"});
     content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Me"})};
     content += Element{Tag::H1, Property{"id", "hello-world-h1"}, "Hello world!"};
     content += Element{Tag::P, Property{"id", "index-p-1"}, R"(
@@ -38,6 +36,35 @@ bygg::HTML::Section Sites::get_index_site() {
     content += Templates::get_image_link_preview({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
     content += Element{Tag::P, Property{"id", "contact-p-2"}, "<em>I also have a Discord. If you want to contact me on there, please email me first.</em>"};
 
+    Section& swedish_content = container.at_section(swedish_body_div_id);
+
+    swedish_content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Jag"})};
+    swedish_content += Element{Tag::H1, Property{"id", "hello-world-h1"}, "Hej!"};
+    swedish_content += Element{Tag::P, Property{"id", "index-p-1"}, R"(
+                Välkommen till Jacob Nilssons webbplats! Jag är en 18-årig student från Sverige intresserad av
+                datorer, programmering, politik och diverse andra saker.
+                <a href="about.html">Läs mer om mig.</a>
+            )"};
+    swedish_content += Element{Tag::H1, Property{"id", "projects-h1"}, "Projekt"};
+    swedish_content += Element{Tag::P, Property{"id", "my-projects-p"}, "Här är några av projekten jag har arbetat på:"};
+    swedish_content += Templates::get_grid({
+        Templates::get_project_preview({.title = "bygg", .description = "En komponentbaserad HTML/CSS-byggare för C++. Används till bland annat denna webbsidan.", .location = "/bygg.html"}),
+        Templates::get_project_preview({.title = "biner", .description = "Verktyg för att kombinera och separera textfiler", .location = "https://git.jacobnilsson.com/jacob/biner"}),
+    });
+    swedish_content += Templates::get_grid({
+        Templates::get_project_preview({.title = "pass2passwords", .description = "GNU Pass till macOS Lösenord konverterare.", .location = "https://git.jacobnilsson.com/jacob/pass2passwords"}),
+        Templates::get_project_preview({.title = "AntiReceiverBuzz", .description = "Liten app som förhindrar oönskat ljud på macOS med mottagare och förstärkare.", .location = "https://git.jacobnilsson.com/jacob/AntiReceiverBuzz"}),
+    });
+    swedish_content += Element{Tag::P, Property{"id", "more-projects-p"}, "<em>För fler projekt, se min Git-server och GitHub.</em>"};
+    swedish_content += Element{Tag::H1, Property{"id", "contact-h1"}, "Kontakt"};
+    swedish_content += Element{Tag::P, Property{"id", "contact-p"}, "Du kan kontakta mig på följande sätt:"};
+    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/git.svg", .text = "Git server", .location = "https://git.jacobnilsson.com/jacob", .alt = "Git Logo"});
+    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/mail.svg", .text = "E-post", .location = "mailto:jacob@jacobnilsson.com", .alt = "Email Logo"});
+    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/bsky.svg", .text = "Bluesky", .location = "https://bsky.app/profile/jacobnilsson.com", .alt = "Bluesky Logo"});
+    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
+    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
+    swedish_content += Element{Tag::P, Property{"id", "contact-p-2"}, "<em>Jag har också en Discord. Om du vill kontakta mig där, vänligen skicka ett e-postmeddelande först.</em>"};
+
     return container;
 }
 
@@ -52,6 +79,7 @@ bygg::HTML::Section Sites::get_settings_site() {
         Element{Tag::Option, Property{"value", "en"}, "English"},
         Element{Tag::Option, Property{"value", "sv"}, "Svenska"},
     };
+    content += Element{Tag::P, Property{"id", "settings-p"}, "If the specific page is unavailable in your preferred language, the website will default to English (or whichever language is available.)"};
 
     Section& swedish_content = container.at_section(swedish_body_div_id);
 
@@ -61,6 +89,7 @@ bygg::HTML::Section Sites::get_settings_site() {
         Element{Tag::Option, Property{"value", "en"}, "English"},
         Element{Tag::Option, Property{"value", "sv"}, "Svenska"},
     };
+    swedish_content += Element{Tag::P, Property{"id", "settings-p"}, "Om den specifika sidan inte är tillgänglig på ditt föredragna språk, kommer webbplatsen att använda engelska (eller det språk som är tillgängligt.)"};
 
     return container;
 }
@@ -92,6 +121,30 @@ bygg::HTML::Section Sites::get_about_me_site() {
     content += Element{Tag::P, "The source code for the website is all yours to mess around with, take inspiration from or contribute to (codebase cleanups and grammar fixes are always welcome). You can find the source code on my Git server <a href=\"https://git.jacobnilsson.com/jacob/jacobnilsson.com\">here</a>."};
     content += Element{Tag::P, "The website is currently self-hosted in Sweden on Debian with Apache2. Domain is provided by Namecheap. The TLS certificate is provided by Let's Encrypt/certbot."};
     content += Element{Tag::P, "Please see the README in the Git repository for copyright information."};
+
+    Section& swedish_content = container.at_section(swedish_body_div_id);
+
+    swedish_content += Element{Tag::H1, Property{"id", "about-me-h1"}, "Om mig"};
+    swedish_content += Element{Tag::P, "Jag är Jacob Nilsson, en 18-årig student, programmerare, vad som helst. Jag föddes i Göteborg, Sverige den 7 september 2006 och bodde där fram till 2016. Nu bor jag i Skåne och studerar teknik i Malmö."};
+    swedish_content += Element{Tag::P, "Jag är intresserad av datorer, programmering, politik och andra nördiga saker. Jag har också sysslat med systemadministration, men det är inget jag tycker om särskilt mycket."};
+    swedish_content += Element{Tag::H2, Property{"id", "computers"}, "Datorer"};
+    swedish_content += Element{Tag::P, "Jag har alltid tyckt att datorer varit roliga att pilla med. Mitt intresse för programmering väcktes verkligen när jag hackade ett litet spel som hette Growtopia. Jag använde ett program för att ändra minnesadresser för spelet, och så småningom började jag skriva små program."};
+    swedish_content += Element{Tag::P, "Nu arbetar jag främst med C och C++, men jag har också arbetat med HTML/CSS, PHP, SQL, Python och Swift tidigare. För tillfället är C++ mitt favoritspråk, och jag använder det till de flesta av mina projekt, inklusive webbplatsen du är på just nu."};
+    swedish_content += Element{Tag::H2, Property{"id", "games"}, "Datorspel"};
+    swedish_content += Element{Tag::P, "Jag har spelat ett (då) litet datorspel som heter Geometry Dash sedan oktober 2013. Även om jag inte är ett proffs på något sätt, har jag tusentals timmar nedlagt på spelet och hundratals avklarade demon-banor. Även om jag inte har så mycket tid att spela längre. Jag har en enorm backlog av demonavklaringar, främst från 1.9-eran som jag älskade mest."};
+    swedish_content += Element{Tag::P, "Förutom det är jag ett fan av Nintendospel och konsoler, och jag har varit en aktiv medlem av Wii-homebrew scenen tidigare."};
+    swedish_content += Element{Tag::H2, Property{"id", "politics"}, "Politik"};
+    swedish_content += Templates::get_spoiler(Section{Tag::Empty_No_Formatting,
+        Element{Tag::P, "Jag är något intresserad av politik, men mestadels på grund av oro för mitt land. Även om jag inte är lojal mot något parti, har jag generellt nationalistiska åsikter, och jag tror på att bevara den svenska kulturen, traditionerna, språket och systemet. Jag tror starkt på individuella friheter och rättigheter, och jag stöder lägre skatter för alla grupper samt besparingar i den offentliga sektorn, där jag tror att det finns mycket slöseri."},
+        Element{Tag::P, "Jag är för den svenska monarkin, men bara för att den är en del av vår kultur och historia och endast som en ceremoniell roll."},
+        Element{Tag::P, "Jag är starkt emot Europeiska unionen, eftersom jag anser att det är ett hot mot vår suveränitet och demokrati. Jag tror att vårt eget folk genom vår egen regering ska bestämma våra lagar och regler och aldrig någon utländsk enhet som vi inte kan rösta ut."},
+        Element{Tag::P, "Å andra sidan är jag för NATO, eftersom det är ett bra sätt att hålla fred i Europa, och organisationen inför inga lagar på oss."},
+    });
+    swedish_content += Element{Tag::H2, Property{"id", "this-website"}, "Denna webbplats"};
+    swedish_content += Element{Tag::P, "Denna webbplats består av standard HTML, CSS och JavaScript. Men HTML och CSS genereras innan distribution med C++ och bygg-biblioteket."};
+    swedish_content += Element{Tag::P, "Källkoden för webbplatsen är all din att pilla med, inspireras av eller bidra till (kodbasrensningar och grammatikfixar är alltid välkomna). Du hittar källkoden på min Git-server <a href=\"https://git.jacobnilsson.com/jacob/jacobnilsson.com\">här</a>."};
+    swedish_content += Element{Tag::P, "Webbplatsen är för närvarande självhostad i Sverige på Debian med Apache2. Domän tillhandahålls av Namecheap. TLS-certifikat tillhandahålls av Let's Encrypt/certbot."};
+    swedish_content += Element{Tag::P, "Se README i Git-repositoriet för upphovsrättsinformation."};
 
     return container;
 }
@@ -218,7 +271,7 @@ bygg::HTML::Section Sites::get_the_sad_state_of_music_hoarding_on_ios() {
 
     content += Element{Tag::H2, Property{"id", "alternatives"}, "Alternatives"};
 
-    content += Element{Tag::P, "Naturally, I grudglingly started looking for alternatives when I realized that Doppler wasn’t going to cut it. Unfortunately, it seems that these alternatives absolutely suck. There are a few contenders, but usually they have their own issues, such as format support, terrible UI, or they are subscription based. I’m happy to pay for a good piece of software, as a developer myself I realize that there’s love and effort put into it, but I don’t want a subscription for a product that, realistically, does not have a recurring cost. It is a piece of software which doesn’t connect to the internet, there is no reason for it to be subscription based."};
+    content += Element{Tag::P, "Naturally, I grudgingly started looking for alternatives when I realized that Doppler wasn't going to cut it. Unfortunately, it seems that these alternatives absolutely suck. There are a few contenders, but usually they have their own issues, such as format support, terrible UI, or they are subscription based. I’m happy to pay for a good piece of software, as a developer myself I realize that there’s love and effort put into it, but I don’t want a subscription for a product that, realistically, does not have a recurring cost. It is a piece of software which doesn’t connect to the internet, there is no reason for it to be subscription based."};
     content += Element{Tag::P, "I’m still looking for a good alternative, but it looks rather bleak. I’m mostly using my Mac for music at this point but it would be great to just be able to use my phone for such a simple task. If you know of any alternatives, please contact me. I’m not interested in streaming services, I want to play my own music. I’m not interested in converting my entire library, and I’m not interested in using some client/server based solution. I just want to play my music, using a standard SMB file share. I don’t mind paying for it either, as long as it’s a one time purchase."};
 
     content += Element{Tag::H2, Property{"id", "conclusion"}, "Conclusion"};

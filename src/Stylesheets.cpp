@@ -12,6 +12,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
         std::string top_color = "#000";
         std::string nav_background = "#f0f0f0";
         std::string nav_color = "#000";
+        std::string nav_scroll_background = "#f0f0f080";
         std::string footer_background = "#fff";
         std::string footer_color = "#000";
         std::string content_background = "#f9f9f9";
@@ -33,6 +34,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
         .top_color = "#eeeeee",
         .nav_background = "#444",
         .nav_color = "#eeeeee",
+        .nav_scroll_background = "#44444480",
         .footer_background = "#333",
         .footer_color = "#eeeeee",
         .content_background = "#222",
@@ -285,9 +287,25 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
             Element{"top-notice", Type::Class,
                 Properties{
                     Property{"width", "100%"},
-                    Property{"padding", "10px"},
-                    Property{"padding-left", "30px"}, // jank, I don't know why it's not working
                     Property{"text-align", "left"},
+                    Property{"padding", "10px"},
+                    Property{"margin-left", "auto"},
+                    Property{"margin-right", "auto"},
+                },
+            },
+            Element{"top-notice small", Type::Class,
+                Properties{
+                    Property{"margin-right", "10px"},
+                },
+            },
+            Element{"top-notice button", Type::Class,
+                Properties{
+                    Property{"margin-right", "20px"},
+                },
+            },
+            Element{"content, .swedish, .english, .eu", Type::Class,
+                Properties{
+                    {"display", "none"},
                 },
             },
             /* For mobile */
@@ -327,11 +345,6 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Properties{
                         Property{"width", "100%"},
                         Property{"max-width", "100%"},
-                    },
-                },
-                Element{"content, .swedish, .english", Type::Class,
-                    Properties{
-                        {"display", "none"},
                     },
                 },
             },

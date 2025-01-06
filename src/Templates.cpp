@@ -54,7 +54,24 @@ bygg::HTML::Section Templates::get_generic_base_body() {
                 Element{Tag::A, make_properties(Property{"href", "https://git.jacobnilsson.com/jacob"}, Property{"class", "swedish"}), "Projekt"},
             },
         },
-        Section{Tag::Div, Property{"id", "content"}, Property{"class", "content"}},
+        Section{Tag::Div, Property{"id", "content"}, Property{"class", "content"},
+            Templates::get_top_notice({.background = "#feffd6", .color = "#721c24", .text = "🇸🇪 Webbsidan finns tillgänglig på svenska. <a href=\"/settings.html\">Ändra språk</a>.", .classes = "english no-lang", .button_onclick = "set_cookie('lang', 'en', 365);"}),
+            Templates::get_top_notice({.background = "#feffd6", .color = "#721c24", .text = "🇺🇸 The website is also available in English <a href=\"/settings.html\">Change language</a>.", .classes = "swedish no-lang", .button_onclick = "set_cookie('lang', 'sv', 365);"}),
+            Templates::get_top_notice({
+                .background = "#003399",
+                .color = "#FFCC00",
+                .text = "The European Union might force me to tell you that I'm forcing cookies, a staple of the internet since the '90s, down your throat so that I can provide you with very basic features of my website such as language selection. That's your notice. And if you live in a sane country like Norway or the UK but happen to be a part of the same continent as morons, you may safely ignore this.",
+                .classes = "eu english",
+                .button_onclick = "set_cookie('eu', 'true', 365);",
+            }),
+            Templates::get_top_notice({
+                .background = "#003399",
+                .color = "#FFCC00",
+                .text = "Europeiska unionen kan tvinga mig att berätta för dig att jag påtvingar kakor, en stapelvara på internet sedan 90-talet, ner i halsen på dig så att jag kan erbjuda dig grundläggande funktioner på min webbplats som språkval. Det är din notis. Och om du bor i ett sunt land som Norge eller Storbritannien och råkar befinna dig på samma kontinent som idioter, kan du ignorera detta meddelande.",
+                .classes = "eu swedish",
+                .button_onclick = "set_cookie('eu', 'true', 365);",
+            }),
+        },
         Section{Tag::Div, Property{"id", "swedish-content"}, Property{"class", "content swedish-content"}},
         Templates::get_generic_footer(),
     };
@@ -189,10 +206,8 @@ bygg::HTML::Section Templates::get_top_notice(const Notice& notice) {
     using namespace bygg::HTML;
 
     Property property{"class", std::string(notice.classes.empty() ? "top-notice" : ("top-notice " + notice.classes))};
-    return Section{Tag::Empty_No_Formatting,
-        Element{Tag::Div, make_properties(property, Property{"style", "color: " + notice.color + "; background-color: " + notice.background + ";"}),
-            notice.text +
-            "<button onclick=\"this.parentElement.style.display='none'; set_cookie('lang', 'en', 365);\" style=\"float:right; margin-right:30px; background-color:" + notice.background + "; color:" + notice.color + ";\">✕</button>"
-        }
+    return Section{Tag::Div, make_properties(property, Property{"style", "color:" + notice.color + ";background-color:" + notice.background + ";"}),
+        Element{Tag::Small, notice.text},
+        Element{Tag::Button, make_properties(Property{"onclick", "this.parentElement.style.display='none';" + notice.button_onclick}, Property{"style", "float:right;background-color:" + notice.background + ";color:" + notice.color + ";"}), "✕"},
     };
 }

@@ -59,6 +59,7 @@ namespace Templates {
         std::string color{};
         std::string background{};
         std::string classes{};
+        std::string button_onclick{};
     };
     bygg::HTML::Section get_generic_header(const std::string&, const std::string& = {}, const std::string& = {});
     bygg::HTML::Section get_generic_footer();

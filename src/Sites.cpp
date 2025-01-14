@@ -9,7 +9,7 @@ bygg::HTML::Section Sites::get_index_site() {
     Section container = Templates::get_generic_base_body();
     Section& content = container.at_section(body_div_id);
 
-    content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Me"})};
+    content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Me"}, Property{"style", "width:50%;height:50%;"})};
     content += Element{Tag::H1, Property{"id", "hello-world-h1"}, "Hello world!"};
     content += Element{Tag::P, Property{"id", "index-p-1"}, R"(
                 Welcome to Jacob Nilsson's website! I'm an 18 year old student from Sweden interested in
@@ -39,7 +39,7 @@ bygg::HTML::Section Sites::get_index_site() {
 
     Section& swedish_content = container.at_section(swedish_body_div_id);
 
-    swedish_content += Element{Tag::Img, make_properties(Property{"id", "sv-index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Jag"})};
+    swedish_content += Element{Tag::Img, make_properties(Property{"id", "sv-index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Jag"}, Property{"style", "width:50%;height:50%;"})};
     swedish_content += Element{Tag::H1, Property{"id", "sv-hello-world-h1"}, "Hej!"};
     swedish_content += Element{Tag::P, Property{"id", "sv-index-p-1"}, R"(
                 Välkommen till Jacob Nilssons webbplats! Jag är en 18-årig student från Sverige intresserad av

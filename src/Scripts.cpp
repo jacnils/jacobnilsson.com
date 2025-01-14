@@ -39,7 +39,7 @@ function delete_cookie(name) {
 window.addEventListener('load', function() {
     const footer = document.querySelector('footer');
     const body = document.body;
-    const nav_bar = document.querySelector('.nav-links');
+    const nav_bar = document.querySelector('.top-bar');
 
     if (document.body.scrollHeight <= window.innerHeight) {
         footer.classList.add('visible');

@@ -18,6 +18,8 @@ static const std::vector<std::pair<std::string, std::string>> copy_files{
     {"img/mail.svg", "out/img/mail.svg"},
     {"img/git.svg", "out/img/git.svg"},
     {"img/picture.jpeg", "out/img/picture.jpeg"},
+    {"img/logo.png", "out/img/logo.png"},
+    {"img/favicon.ico", "out/img/favicon.ico"},
 };
 
 // CSS files to generate from bygg::CSS::Stylesheet

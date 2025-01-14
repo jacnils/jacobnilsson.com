@@ -98,7 +98,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"transition", "top 0.3s"},
                 },
             },
-            Element{"top-bar.hidden", Type::Class, Property{"top", "-65px"}},
+            Element{"top-bar.hidden", Type::Class, Property{"top", "-150px"}}, // TODO: Make this be dynamic
             Element{"header", Type::Class,
                 Properties{
                     Property{"padding", "15px"},

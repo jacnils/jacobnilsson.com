@@ -51,6 +51,36 @@ executable, or the parent directory of the executable. This is because the progr
 will copy the fonts to the output directory. If not, the program will throw an exception.
 Therefore, you must move the `fonts/` directory if you move the executable.
 
+## My test environment
+
+I develop mainly on a Mac running the latest macOS version. I use CLion as my IDE, and
+of course CMake is the build system. I'm testing with the Clang compiler.
+
+I like to set up a web server on my Mac to test the website locally. I use Homebrew
+to do this, along with the included script.
+
+```bash
+brew install nginx
+brew services start nginx
+```
+
+Then when I set up my CMake build, I call it with these parameters:
+
+```bash
+cmake -DINSTALL_HTML=ON -DIP_ADDRESS=localhost -DLOCATION=/usr/local/var/www -DUSERNAME=jacob ..
+```
+
+This will install the HTML files in the default nginx directory, and I can access the
+website by going to `http://localhost:8080` in my web browser.
+
+I've chosen to do it this way, because CLion's built in web server doesn't seem to provide a way
+to change the virtual root directory. And if you don't change the virtual root directory, you
+can't use relative paths in your HTML files, which is a pain, even with bygg which doesn't
+provide any way to correct relative paths at compile time. (Maybe that's worth implementing?)
+
+As for deploying, I do it in the exact same manner as shown above, except I use my server's IP
+address instead.
+
 ## Contributions
 
 Contributions to fix e.g. typos, or just general improvements to the code are welcome.

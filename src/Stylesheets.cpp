@@ -121,6 +121,12 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     Property{"text-decoration", "none"},
                 },
             },
+            Element{"nav-links a", Type::Class, "hover",
+                Properties{
+                    Property{"transform", "translateY(2px)"},
+                    Property{"transition", "transform 0.3s ease"},
+                },
+            },
             Element{"content", Type::Class,
                 Properties{
                     Property{"padding", "100px 20px 50px"},

@@ -113,7 +113,6 @@ window.addEventListener('load', function() {
         });
     }
 
-    // handle the EU cookie notice
     const in_eu = Intl.DateTimeFormat().resolvedOptions().timeZone.startsWith("Europe");
     if (in_eu && !cookie_exists('eu')) {
         const eu = document.querySelectorAll('.eu');

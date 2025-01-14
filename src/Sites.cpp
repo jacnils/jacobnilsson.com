@@ -34,6 +34,7 @@ bygg::HTML::Section Sites::get_index_site() {
     content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/bsky.svg", .text = "Bluesky", .location = "https://bsky.app/profile/jacobnilsson.com", .alt = "Bluesky Logo"});
     content += Templates::get_image_link_preview({.mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
     content += Templates::get_image_link_preview({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
+    content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "YouTube", .location = "https://youtube.com/@jacobnilssoncom", .alt = "YouTube Logo"});
     content += Element{Tag::P, Property{"id", "contact-p-2"}, "<em>I also have a Discord. If you want to contact me on there, please email me first.</em>"};
 
     Section& swedish_content = container.at_section(swedish_body_div_id);
@@ -63,6 +64,7 @@ bygg::HTML::Section Sites::get_index_site() {
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/bsky.svg", .text = "Bluesky", .location = "https://bsky.app/profile/jacobnilsson.com", .alt = "Bluesky Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
+    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "YouTube", .location = "https://youtube.com/@jacobnilssoncom", .alt = "YouTube Logo"});
     swedish_content += Element{Tag::P, Property{"id", "contact-p-2"}, "<em>Jag har också en Discord. Om du vill kontakta mig där, vänligen skicka ett e-postmeddelande först.</em>"};
 
     return container;

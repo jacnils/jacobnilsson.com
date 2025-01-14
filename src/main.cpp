@@ -6,6 +6,10 @@
 #include <Templates.hpp>
 #include <bygg/bygg.hpp>
 
+static const std::string html_prepend{"<!-- I've chosen to minify the HTML. You can find the code producing the website at https://git.jacobnilsson.com/jacob/jacobnilsson.com. -->\n"};
+static const std::string css_prepend{"/* I've chosen to minify the CSS. You can find the code producing the stylesheet at https://git.jacobnilsson.com/jacob/jacobnilsson.com. */\n"};
+static const std::string js_prepend{};
+
 // Files to copy from the source directory to the output directory
 // Also works with files located in the parent directory
 static const std::vector<std::pair<std::string, std::string>> copy_files{
@@ -13,6 +17,7 @@ static const std::vector<std::pair<std::string, std::string>> copy_files{
     {"fonts/SiteFontBold.ttf", "out/fonts/SiteFontBold.ttf"},
     {"img/github-black.svg", "out/img/github-black.svg"},
     {"img/github-white.svg", "out/img/github-white.svg"},
+    {"img/youtube.svg", "out/img/youtube.svg"},
     {"img/bsky.svg", "out/img/bsky.svg"},
     {"img/mail.svg", "out/img/mail.svg"},
     {"img/git.svg", "out/img/git.svg"},
@@ -79,7 +84,7 @@ int main(int argc, char** argv) {
 
         if (!std::get<3>(it)) {
             endpoint.open();
-            endpoint.append_string(bygg::HTML::Document(std::get<1>(it)).get<std::string>(bygg::HTML::Formatting::Pretty));
+            endpoint.append_string(bygg::HTML::Document(std::get<1>(it)).get<std::string>(bygg::HTML::Formatting::None));
             endpoint.close();
             continue;
         }
@@ -185,20 +190,29 @@ int main(int argc, char** argv) {
         root += page;
 
         endpoint.open();
-        endpoint.append_string(bygg::HTML::Document(root).get<std::string>(bygg::HTML::Formatting::Pretty));
+        if (!html_prepend.empty()) {
+            endpoint.append_string(html_prepend);
+        }
+        endpoint.append_string(bygg::HTML::Document(root).get<std::string>(bygg::HTML::Formatting::None));
         endpoint.close();
     }
 
     for (const auto& it : css_files) {
         Endpoint endpoint(std::get<0>(it));
         endpoint.open();
-        endpoint.append_string(std::get<1>(it).get<std::string>(bygg::CSS::Formatting::Pretty));
+        if (!css_prepend.empty()) {
+            endpoint.append_string(css_prepend);
+        }
+        endpoint.append_string(std::get<1>(it).get<std::string>(bygg::CSS::Formatting::None));
         endpoint.close();
     }
 
     for (const auto& it : js_files) {
         Endpoint endpoint(std::get<0>(it));
         endpoint.open();
+        if (!js_prepend.empty()) {
+            endpoint.append_string(js_prepend);
+        }
         endpoint.append_string(std::get<1>(it));
         endpoint.close();
     }

@@ -39,15 +39,15 @@ bygg::HTML::Section Sites::get_index_site() {
 
     Section& swedish_content = container.at_section(swedish_body_div_id);
 
-    swedish_content += Element{Tag::Img, make_properties(Property{"id", "index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Jag"})};
-    swedish_content += Element{Tag::H1, Property{"id", "hello-world-h1"}, "Hej!"};
-    swedish_content += Element{Tag::P, Property{"id", "index-p-1"}, R"(
+    swedish_content += Element{Tag::Img, make_properties(Property{"id", "sv-index-img"}, Property{"src", "/img/picture.jpeg"}, Property{"alt", "Jag"})};
+    swedish_content += Element{Tag::H1, Property{"id", "sv-hello-world-h1"}, "Hej!"};
+    swedish_content += Element{Tag::P, Property{"id", "sv-index-p-1"}, R"(
                 Välkommen till Jacob Nilssons webbplats! Jag är en 18-årig student från Sverige intresserad av
                 datorer, programmering, politik och diverse andra saker.
                 <a href="about.html">Läs mer om mig.</a>
             )"};
-    swedish_content += Element{Tag::H1, Property{"id", "projects-h1"}, "Projekt"};
-    swedish_content += Element{Tag::P, Property{"id", "my-projects-p"}, "Här är några av projekten jag har arbetat på:"};
+    swedish_content += Element{Tag::H1, Property{"id", "sv-projects-h1"}, "Projekt"};
+    swedish_content += Element{Tag::P, Property{"id", "sv-my-projects-p"}, "Här är några av projekten jag har arbetat på:"};
     swedish_content += Templates::get_grid({
         Templates::get_project_preview({.title = "bygg", .description = "En komponentbaserad HTML/CSS-byggare för C++. Används till bland annat denna webbsidan.", .location = "/bygg.html"}),
         Templates::get_project_preview({.title = "biner", .description = "Verktyg för att kombinera och separera textfiler", .location = "https://git.jacobnilsson.com/jacob/biner"}),
@@ -56,16 +56,16 @@ bygg::HTML::Section Sites::get_index_site() {
         Templates::get_project_preview({.title = "pass2passwords", .description = "GNU Pass till macOS Lösenord konverterare.", .location = "https://git.jacobnilsson.com/jacob/pass2passwords"}),
         Templates::get_project_preview({.title = "AntiReceiverBuzz", .description = "Liten app som förhindrar oönskat ljud på macOS med mottagare och förstärkare.", .location = "https://git.jacobnilsson.com/jacob/AntiReceiverBuzz"}),
     });
-    swedish_content += Element{Tag::P, Property{"id", "more-projects-p"}, "<em>För fler projekt, se min Git-server och GitHub.</em>"};
-    swedish_content += Element{Tag::H1, Property{"id", "contact-h1"}, "Kontakt"};
-    swedish_content += Element{Tag::P, Property{"id", "contact-p"}, "Du kan kontakta mig på följande sätt:"};
+    swedish_content += Element{Tag::P, Property{"id", "sv-more-projects-p"}, "<em>För fler projekt, se min Git-server och GitHub.</em>"};
+    swedish_content += Element{Tag::H1, Property{"id", "sv-contact-h1"}, "Kontakt"};
+    swedish_content += Element{Tag::P, Property{"id", "sv-contact-p"}, "Du kan kontakta mig på följande sätt:"};
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/git.svg", .text = "Git server", .location = "https://git.jacobnilsson.com/jacob", .alt = "Git Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/mail.svg", .text = "E-post", .location = "mailto:jacob@jacobnilsson.com", .alt = "Email Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/bsky.svg", .text = "Bluesky", .location = "https://bsky.app/profile/jacobnilsson.com", .alt = "Bluesky Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jcbnilsson", .alt = "GitHub Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "YouTube", .location = "https://youtube.com/@jacobnilssoncom", .alt = "YouTube Logo"});
-    swedish_content += Element{Tag::P, Property{"id", "contact-p-2"}, "<em>Jag har också en Discord. Om du vill kontakta mig där, vänligen skicka ett e-postmeddelande först.</em>"};
+    swedish_content += Element{Tag::P, Property{"id", "sv-contact-p-2"}, "<em>Jag har också en Discord. Om du vill kontakta mig där, vänligen skicka ett e-postmeddelande först.</em>"};
 
     return container;
 }

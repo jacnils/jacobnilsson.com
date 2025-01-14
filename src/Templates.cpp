@@ -49,7 +49,7 @@ bygg::HTML::Section Templates::get_generic_base_body() {
                 Element{Tag::A, make_properties(Property{"href", "https://git.jacobnilsson.com/jacob"}, Property{"class", "english"}), "Projects"},
                 Element{Tag::A, make_properties(Property{"href", "/"}, Property{"class", "swedish"}), "Hem"},
                 Element{Tag::A, make_properties(Property{"href", "/about.html"}, Property{"class", "swedish"}), "Om mig"},
-                Element{Tag::A, make_properties(Property{"href", "/#contact-h1"}, Property{"class", "swedish"}), "Kontakt"},
+                Element{Tag::A, make_properties(Property{"href", "/#sv-contact-h1"}, Property{"class", "swedish"}), "Kontakt"},
                 Element{Tag::A, make_properties(Property{"href", "/blog.html"}, Property{"class", "swedish"}), "Blogg"},
                 Element{Tag::A, make_properties(Property{"href", "https://git.jacobnilsson.com/jacob"}, Property{"class", "swedish"}), "Projekt"},
             },

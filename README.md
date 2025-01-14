@@ -13,9 +13,11 @@ not intended to be a general-purpose website generator.
 ## Building
 
 To build the website, you will need to have the bygg library installed.
-You will also need a C++20 compiler and CMake. Once you have these
-dependencies installed, you can build the website by running the following
-commands:
+You will also need a C++20 compiler and CMake. You will also need MinifyJS
+installed, if you want minified JavaScript files. You can install MinifyJS
+by running `npm install minify -g`.
+Once you have these dependencies installed, you can build the website by running 
+the following commands:
 
 ```bash
 mkdir build

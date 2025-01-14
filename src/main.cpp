@@ -6,10 +6,6 @@
 #include <Templates.hpp>
 #include <bygg/bygg.hpp>
 
-static const std::string html_prepend{"<!-- I've chosen to minify the HTML. You can find the code producing the website at https://git.jacobnilsson.com/jacob/jacobnilsson.com. -->\n"};
-static const std::string css_prepend{"/* I've chosen to minify the CSS. You can find the code producing the stylesheet at https://git.jacobnilsson.com/jacob/jacobnilsson.com. */\n"};
-static const std::string js_prepend{};
-
 // Files to copy from the source directory to the output directory
 // Also works with files located in the parent directory
 static const std::vector<std::pair<std::string, std::string>> copy_files{
@@ -190,9 +186,6 @@ int main(int argc, char** argv) {
         root += page;
 
         endpoint.open();
-        if (!html_prepend.empty()) {
-            endpoint.append_string(html_prepend);
-        }
         endpoint.append_string(bygg::HTML::Document(root).get<std::string>(bygg::HTML::Formatting::None));
         endpoint.close();
     }
@@ -200,9 +193,6 @@ int main(int argc, char** argv) {
     for (const auto& it : css_files) {
         Endpoint endpoint(std::get<0>(it));
         endpoint.open();
-        if (!css_prepend.empty()) {
-            endpoint.append_string(css_prepend);
-        }
         endpoint.append_string(std::get<1>(it).get<std::string>(bygg::CSS::Formatting::None));
         endpoint.close();
     }
@@ -210,11 +200,13 @@ int main(int argc, char** argv) {
     for (const auto& it : js_files) {
         Endpoint endpoint(std::get<0>(it));
         endpoint.open();
-        if (!js_prepend.empty()) {
-            endpoint.append_string(js_prepend);
-        }
         endpoint.append_string(std::get<1>(it));
         endpoint.close();
+
+        // try uglifyjs
+        if (std::system("command -v npx > /dev/null") == 0) {
+            std::system(std::string("npx uglifyjs " + std::get<0>(it) + " --output " + std::get<0>(it) + " --compress --mangle > /dev/null").c_str()); // NOLINT
+        }
     }
 
     if (argc > 1 && std::string(argv[1]) == "no-open") {

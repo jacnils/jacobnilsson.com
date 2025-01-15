@@ -129,7 +129,7 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
             },
             Element{"content", Type::Class,
                 Properties{
-                    Property{"padding", "100px 20px 50px"},
+                    Property{"padding", "20px 50px"},
                     Property{"transition", "padding 0.3s"},
                     Property{"text-align", "center"},
                     Property{"max-width", "60%"},

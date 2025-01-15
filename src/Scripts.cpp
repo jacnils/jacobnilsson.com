@@ -205,22 +205,24 @@ function toggle_spoiler(spoiler_id, spoiler_button_id) {
 }
 
 function copy_to_clipboard(button, code_id) {
-    const code_block = document.getElementById(code_id);
     const text_area = document.createElement('textarea');
 
-    text_area.value = code_block.textContent;
+    text_area.style.display = 'none';
+    text_area.value = document.getElementById(code_id).innerText;
 
     document.body.appendChild(text_area);
-
     text_area.select();
 
-    document.execCommand('copy');
-    document.body.removeChild(text_area);
-
-    button.textContent = 'Copied!';
+    navigator.clipboard.writeText(text_area.value).then(() => {
+        button.style.backgroundColor = '#28a745';
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    }).finally(() => {
+        document.body.removeChild(text_area);
+    });
 
     setTimeout(() => {
-        button.textContent = 'Copy';
+        button.style.backgroundColor = '';
     }, 2000);
 }
 )";

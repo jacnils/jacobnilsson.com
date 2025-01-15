@@ -20,6 +20,7 @@ bygg::HTML::Section Templates::get_generic_header(const std::string& title, cons
             Element{Tag::Link, make_properties(Property{"rel", "stylesheet"}, Property{"href", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"})},
             Element{Tag::Link, make_properties(Property{"rel", "icon"}, Property{"type", "image/x-icon"}, Property{"href", "/img/favicon.ico"})},
             Element{Tag::Script, make_properties(Property{"src", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"})},
+            Element{Tag::Script, make_properties(Property{"src", "https://kit.fontawesome.com/aa55cd1c33.js"}, Property{"crossorigin", "anonymous"})},
             Element{Tag::Script, "hljs.highlightAll();"},
             Element{Tag::Link, make_properties(Property{"rel", "stylesheet"}, Property{"href", "/css/style.css"})},
         },
@@ -31,7 +32,7 @@ bygg::HTML::Section Templates::get_generic_footer() {
     return Section{Tag::Empty_No_Formatting,
         Section{Tag::Footer, Property{"class", "footer"}, Property{"id", "footer"},
             Element{Tag::P, "&copy; 2024-2025 Jacob Nilsson"},
-            Element{Tag::Button, Properties{Property{"onclick", "location.href='/settings.html'"}, Property{"style", "font-size: 20px; background: transparent; float: right; margin-right: 20px;"}}, "⚙"}
+            Element{Tag::Button, Properties{Property{"class", "fa-solid fa-gear"}, Property{"onclick", "location.href='/settings.html'"}, Property{"style", "font-size: 20px; background: transparent; float: right; margin-right: 20px;"}}, ""}
         },
         Element{Tag::Script, Property{"src", "/js/script.js"}},
     };
@@ -43,13 +44,13 @@ bygg::HTML::Section Templates::get_generic_base_body() {
         Section{Tag::Div, make_properties(Property{"class", "top-bar"}, Property{"id", "topBar"}),
             Section{Tag::Div, Property{"class", "header dark"},
                 Section{Tag::A, Property{"href", "/"},
-                    Element{Tag::Img, make_properties(Property{"id", "logo"}, Property{"src", "/img/logo.png"}, Property{"alt", "Jacob Nilsson"}, Property{"style", "height:100px;width:100px;filter:invert(1);vertical-align:middle;padding:10px;"})},
+                    Element{Tag::Img, make_properties(Property{"id", "logo"}, Property{"src", "/img/logo.png"}, Property{"style", "height:100px;width:100px;filter:invert(1);vertical-align:middle;padding:10px;"})},
                     Element{Tag::Empty_No_Formatting, "jacobnilsson.com"},
                 },
             },
             Section{Tag::Div, Property{"class", "header light"},
                 Section{Tag::A, Property{"href", "/"},
-                    Element{Tag::Img, make_properties(Property{"id", "logo"}, Property{"src", "/img/logo.png"}, Property{"alt", "Jacob Nilsson"}, Property{"style", "height:100px;width:100px;vertical-align:middle;padding:10px;"})},
+                    Element{Tag::Img, make_properties(Property{"id", "logo"}, Property{"src", "/img/logo.png"}, Property{"style", "height:100px;width:100px;vertical-align:middle;padding:10px;"})},
                     Element{Tag::Empty_No_Formatting, "jacobnilsson.com"},
                 },
             },
@@ -160,29 +161,20 @@ bygg::HTML::Section Templates::get_spoiler(const bygg::HTML::Section& content) {
 
 bygg::HTML::Section Templates::get_codeblock(const std::string& code) {
     using namespace bygg::HTML;
-    std::string code_copy = code;
-    // escape characters that would break the HTML
-    for (size_t i = 0; i < code_copy.size(); ++i) {
-        if (code_copy[i] == '<') {
-            code_copy.replace(i, 1, "&lt;");
-            i += 3;
-        } else if (code_copy[i] == '>') {
-            code_copy.replace(i, 1, "&gt;");
-            i += 3;
-        }
-    }
+
     return Section{Tag::Div, Property{"class", "code-block"},
         Section{Tag::Pre, Property{"id", "code-block-" + std::to_string(codeblock_id)},
             Element{Tag::Code,
                 Properties{
                     Property{"class", "hljs"},
-                    Property{"style", "white-space: pre-wrap; text-align: left;"},
-                }, code_copy,
+                    Property{"style", "text-align:left;"},
+                }, code,
+                ElementParameters::Replace_All,
             },
         },
-        Section{Tag::Div, Property{"style", "text-align: right; margin-top: -100px; margin-right: 5px; z-index: 10; position: relative;"},
-            Element{Tag::Button, Properties{Property{"class", "copy-button"}, Property{"onclick", "copy_to_clipboard(this, 'code-block-" + std::to_string(codeblock_id++) + "')"}}, "Copy"}
-        }
+        Section{Tag::Div, Property{"style", "text-align:right;margin-top:-10px;margin-right:5px;z-index:10;position:relative;"},
+            Element{Tag::Button, Properties{Property{"class", "copy-button fa-solid fa-clipboard"}, Property{"onclick", "copy_to_clipboard(this, 'code-block-" + std::to_string(codeblock_id++) + "')"}}, ""},
+        },
     };
 }
 

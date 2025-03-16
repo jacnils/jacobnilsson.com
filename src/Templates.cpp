@@ -92,11 +92,19 @@ bygg::HTML::Section Templates::get_generic_base_body() {
 
 bygg::HTML::Section Templates::get_blogpost_preview(const BlogPostPreview& bp) {
     using namespace bygg::HTML;
+    std::string tags{};
+    for (char ch : bp.tags) {
+        tags += ch;
+        if (ch == ',') {
+            tags += ' ';
+        }
+    }
+
     return Section{Tag::Div, Property{"class", "preview"}, bp.location.empty() ? Property() : Property{"onclick", "location.href='" + bp.location + "';"},
         Element{Tag::H2, Property{"class", "preview_title"}, bp.title},
         Element{Tag::Small, Property{"class", "preview_author"}, "by " + bp.author + " • "},
         Element{Tag::Small, Property{"class", "preview_date"}, bp.date + " • "},
-        Element{Tag::Small, Property{"class", "preview_tags"}, bp.tags},
+        Element{Tag::Small, Property{"class", "preview_tags"}, tags},
         Element{Tag::P, Property{"class", "preview_description"}, bp.description},
     };
 }
@@ -198,11 +206,19 @@ bygg::HTML::Section Templates::get_numbered_list(const std::vector<std::string> 
 
 bygg::HTML::Section Templates::get_blogpost_header(const BlogPostHeader& header) {
     using namespace bygg::HTML;
+    std::string tags{};
+    for (char ch : header.tags) {
+        tags += ch;
+        if (ch == ',') {
+            tags += ' ';
+        }
+    }
+
     return Section{Tag::Div, Property{"class", "blogpost-header"},
         Element{Tag::H1, header.title},
         Element{Tag::Small, Property{"class", "blogpost-author"}, "by " + header.author + " • "},
         Element{Tag::Small, Property{"class", "blogpost-date"}, header.date + " • "},
-        Element{Tag::Small, Property{"class", "blogpost-tags"}, header.tags},
+        Element{Tag::Small, Property{"class", "blogpost-tags"}, tags},
     };
 }
 

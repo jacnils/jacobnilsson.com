@@ -159,6 +159,14 @@ bygg::HTML::Section Sites::get_blog_site() {
     content += Element{Tag::H1, Property{"id", "blog-h1"}, "Blog"};
     content += Element{Tag::P, "I like to write blog posts about things I find interesting sometimes."};
     content += Templates::get_blogpost_preview({
+        .title = "Reassigning Your Email: The Hidden Vulnerability",
+        .author = "Jacob Nilsson",
+        .date = "2025-03-16",
+        .tags = "Development,Authentication,Vulnerability,Security,Email,Services,Technology,Computers",
+        .description = "I recently discovered a vulnerability...ish, in the way email addresses are handled by some services. It's a rather simple vulnerability, but it can have serious consequences.",
+        .location = "/blog/reassigning-your-email-the-hidden-vulnerability.html",
+    });
+    content += Templates::get_blogpost_preview({
         .title = "Rant: The sad state of music hoarding on iOS",
         .author = "Jacob Nilsson",
         .date = "2024-11-25",
@@ -283,6 +291,44 @@ bygg::HTML::Section Sites::get_the_sad_state_of_music_hoarding_on_ios() {
 
     return container;
 }
+
+bygg::HTML::Section Sites::get_reassigning_your_email_the_hidden_vulnerability() {
+    using namespace bygg::HTML;
+    Section container = Templates::get_generic_base_body();
+    Section& content = container.at_section(body_div_id);
+
+    content += Templates::get_blogpost_header({
+        .title = "Reassigning Your Email: The Hidden Vulnerability",
+        .author = "Jacob Nilsson",
+        .date = "2025-03-16",
+        .tags = "Development,Authentication,Vulnerability,Security,Email,Services,Technology,Computers",
+    });
+
+    content += Element{Tag::P, "I highly doubt I'm the first one to discover this, in fact I know I'm not, because *some* services have implemented a very simple solution to this problem. But I think even a single service that doesn't implement this solution is one too many."};
+    content += Element{Tag::H2, Property{"id", "the-problem"}, "The Problem"};
+    content += Element{Tag::P, "When you sign up for a service, you often have to provide an email address. Sometimes, it's just for verification purposes, other times it's used as the sole means of identification. In the former case, it might not be *as* bad of a problem, but in the latter case, it could cause many issues, both for you but also in cases where the email address is someone else's."};
+    content += Element{Tag::P, "Most of the time this isn't a problem. You enter an email address, and receive a verification email to confirm that you own the email address. What if you don't own the email address, or perhaps you made a typo? Fortunately, the service won't let you proceed without a valid, verified email address. Perfect, this solves the problem, right?"};
+    content += Element{Tag::P, "But what if we wish to change our email address at a later point? Many services offer some kind of endpoint for changing your email address, and this works provided you still have access to your old email address. If you don't then you usually have to go through the process of proving your identity to the service's support team, which has varying results. If you *do* have access to your old email address, this is a very simple process."};
+    content += Element{Tag::H2, Property{"id", "implications"}, "Implications"};
+    content += Templates::get_numbered_list({
+        "If you make a typo, you'll change your email address to a non-existent one. And then, you can't even change it back because you can't verify the new email address.",
+        "If you don't own the email address, you could change it to someone else's. Then they'll be held responsible for **your** account. Further, they'll have substantial evidence that they're the rightful owner of **your** account.",
+        "If you're a malicious actor, you could create an account with someone else's email, by creating one with your email and changing it to theirs afterwards.",
+    });
+    content += Element{Tag::P, "This is a pretty serious issue, but fortunately, it doesn't have all that much potential for harm for anyone else, only really for yourself. The worst you can really do is lock yourself out of your account, or unwillingly assign someone an account on your service, perhaps preventing them from creating an account. But, even if you were to do this, they could log in and delete the account, so it's not a huge issue."};
+    content += Element{Tag::P, "Further, even if you changed the email address and don't have access to it, you can most likely still log in with your username and password, so it's not like you're completely locked out of your account. You just can't change your email address. But you're not going to get any verification emails, and for services where you receive an email verification code to log in, there's not much you can do. Fortunately, many services these days opt for other types of verification, such as SMS, TOTP, or even the new-fangled passwordless passkeys."};
+    content += Element{Tag::H2, Property{"id", "the-solution"}, "The Solution"};
+    content += Element{Tag::P, "The solution is simple. Just like when you sign up, you should have to verify your email address when you change it. This way, you can't change it to a non-existent email address and lose access to your account, or use up someone else's email address. It's a simple solution, and I'm sure it's something that has just been overlooked by the developers of these services. After all, changing your email is not something that happens often, so it's not something that I'd imagine has been tested thoroughly."};
+    content += Element{Tag::H2, Property{"id", "help-i-changed-my-email-to-a-non-existent-one"}, "Help, I Changed My Email to a Non-Existent One!"};
+    content += Element{Tag::P, "If this is you, there are potential solutions, but the results may certainly vary. If you're using your own domain (e.g. `john@doesoft.com`) you could just create an email address with the typo and change it to the intended address."};
+    content += Element{Tag::P, "If you're using a public email service, such as Gmail, Hotmail or Yahoo, you could try to create an email address with the typo, but depending on whether the typo email address is already taken, this may not work for you. In case it doesn't, your best bet would probably be to contact the service in question and ask that they change it back for you. If they refuse, sorry, but you're probably out of luck."};
+    content += Element{Tag::H2, Property{"id", "conclusion"}, "Conclusion"};
+    content += Element{Tag::P, "Some services allow you to change your email to an unverified email address, which has several serious implications. I urge developers reading this to fix this in their services, if their services are susceptible to this issue."};
+    content += Element{Tag::P, "Thank you for reading, have a good day!"};
+
+    return container;
+}
+
 
 bygg::HTML::Section Sites::get_bygg_site() {
     using namespace bygg::HTML;

@@ -6,6 +6,10 @@
 #include <Templates.hpp>
 #include <bygg/bygg.hpp>
 
+static const std::vector<std::string> skip_list{
+    {"/img/logo.png"},
+};
+
 // Files to copy from the source directory to the output directory
 // Also works with files located in the parent directory
 static const std::vector<std::pair<std::string, std::string>> copy_files{
@@ -42,6 +46,7 @@ static const std::vector<std::tuple<std::string, bygg::HTML::Section, PageProper
     {"out/blog.html", Sites::get_blog_site(), PageProperties{.lang = "en"}, true},
     {"out/blog/macos-passwords-app-crash-bug.html", Sites::get_macos_passwords_app_crash_bug(), PageProperties{.lang = "en"}, true},
     {"out/blog/the-sad-state-of-music-hoarding-on-ios.html", Sites::get_the_sad_state_of_music_hoarding_on_ios(), PageProperties{.lang = "en"}, true},
+    {"out/blog/reassigning-your-email-the-hidden-vulnerability.html", Sites::get_reassigning_your_email_the_hidden_vulnerability(), PageProperties{.lang = "en"}, true},
     {"out/bygg.html", Sites::get_bygg_site(), PageProperties{.lang = "en"}, true},
 };
 
@@ -170,6 +175,17 @@ int main(int argc, char** argv) {
                         for (const auto& it_deep : element.get_properties()) {
                             if (it_deep.get_key() == "src") {
                                 image = it_deep.get_value();
+
+                                bool skip{false};
+                                for (const auto& it : skip_list) {
+                                    if (image == it) {
+                                        image.clear();
+                                        skip = true;
+                                    }
+                                }
+                                if (skip) {
+                                    continue;
+                                }
                                 return;
                             }
                         }

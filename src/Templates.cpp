@@ -31,7 +31,7 @@ bygg::HTML::Section Templates::get_generic_footer() {
     using namespace bygg::HTML;
     return Section{Tag::Empty_No_Formatting,
         Section{Tag::Footer, Property{"class", "footer"}, Property{"id", "footer"},
-            Element{Tag::P, "&copy; 2024-2025 Jacob Nilsson"},
+            Element{Tag::P, "&copy; 2024-2026 Jacob Nilsson"},
             Element{Tag::Button, Properties{Property{"class", "fa-solid fa-gear"}, Property{"onclick", "location.href='/settings.html'"}, Property{"style", "font-size: 20px; background: transparent; float: right; margin-right: 20px;"}}, ""}
         },
         Element{Tag::Script, Property{"src", "/js/script.js"}},

@@ -14,6 +14,12 @@ bygg::HTML::Section Sites::get_about_me_site() {
     };
 
     Section& swedish_content = container.at_section(swedish_body_div_id);
+
+    swedish_content += {
+        Element{Tag::H1, Property{"id", "sv-index-p-1"}, ""},
+    };
+
+    return container;
 }
 
 

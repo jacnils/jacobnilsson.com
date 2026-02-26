@@ -23,7 +23,7 @@ public:
             throw std::runtime_error{"Invalid endpoint"};
         }
 
-        std::string dir{std::filesystem::path(this->endpoint).parent_path()};
+        std::string dir{std::filesystem::path(this->endpoint).parent_path().string()};
         if (!std::filesystem::exists(dir) && dir.empty() == false) {
             if (!std::filesystem::create_directories(dir)) {
                 throw std::runtime_error{"Failed to create directory '" + dir + "'."};
@@ -31,7 +31,7 @@ public:
         }
 
         std::string full_path{dir};
-        full_path += !full_path.empty() ? "/" : ""; full_path += std::filesystem::path(this->endpoint).filename();
+        full_path += !full_path.empty() ? "/" : ""; full_path += std::filesystem::path(this->endpoint).filename().string();
         this->fs.open(full_path);
 
         if (!this->fs.is_open()) {

@@ -16,12 +16,12 @@ namespace Templates {
         Right,
     };
     struct BlogPostPreview {
-        std::string location{};
         std::string title{};
         std::string author{};
         std::string date{};
         std::string tags{};
         std::string description{};
+        std::string location{};
     };
     struct BlogPostHeader {
         std::string title{};
@@ -30,9 +30,9 @@ namespace Templates {
         std::string tags{};
     };
     struct ProjectPreview {
-        std::string location{};
         std::string title{};
         std::string description{};
+        std::string location{};
     };
     struct ImageLink {
         std::string alt{};
@@ -44,13 +44,13 @@ namespace Templates {
         Mode mode{Mode::Any};
     };
     struct ImageLinkPreview {
-        std::string alt{};
-        std::string location{};
-        std::string text{};
+        Mode mode{Mode::Any};
         std::string image_location{};
+        std::string text{};
+        std::string location{};
+        std::string alt{};
         std::string id{};
         std::string classes{};
-        Mode mode{Mode::Any};
         Pos image_pos{Pos::Center};
         Pos text_pos{Pos::Center};
     };

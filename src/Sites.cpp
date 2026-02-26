@@ -4,6 +4,19 @@
 static constexpr int body_div_id = 1;
 static constexpr int swedish_body_div_id = 2;
 
+bygg::HTML::Section Sites::get_about_me_site() {
+    using namespace bygg::HTML;
+    Section container = Templates::get_generic_base_body();
+    Section& content = container.at_section(body_div_id);
+
+    content += {
+        Element{Tag::H1, Property{"id", "index-p-1"}, ""},
+    };
+
+    Section& swedish_content = container.at_section(swedish_body_div_id);
+}
+
+
 bygg::HTML::Section Sites::get_index_site() {
     using namespace bygg::HTML;
     Section container = Templates::get_generic_base_body();
@@ -18,19 +31,44 @@ bygg::HTML::Section Sites::get_index_site() {
     content += Element{Tag::H1, Property{"id", "projects-h1"}, "Projects"};
     content += Element{Tag::P, Property{"id", "my-projects-p"}, "Here are some of the projects I've worked on:"};
     content += Templates::get_grid({
-        Templates::get_project_preview({.title = "bygg", .description = "A component-based HTML/CSS builder for C++. Powers this website.", .location = "/bygg.html"}),
-        Templates::get_project_preview({.title = "biner", .description = "Command-line utility for combining and separating text files", .location = "https://github.com/jacnils/biner"}),
+        Templates::get_project_preview({
+            .title = "netkit",
+            .description = "C99 and C++23 cross-platform networking toolkit library providing safe Unix-style sockets and protocol abstractions.",
+            .location = "https://github.com/jacnils/netkit",
+        }),
+        Templates::get_project_preview({
+            .title = "bygg",
+            .description = "A component-based HTML/CSS builder for C++. Powers this website.",
+            .location = "/bygg.html",
+        }),
     });
     content += Templates::get_grid({
-        Templates::get_project_preview({.title = "pass2passwords", .description = "GNU Pass to macOS Passwords converter.", .location = "https://github.com/jacnils/pass2passwords"}),
-        Templates::get_project_preview({.title = "AntiReceiverBuzz", .description = "Tiny app preventing unwanted noise on macOS with receivers & amplifiers.", .location = "https://github.com/jacnils/AntiReceiverBuzz"}),
+        Templates::get_project_preview({
+            .title = "pass2passwords",
+            .description = "GNU Pass to macOS Passwords converter.",
+            .location = "https://github.com/jacnils/pass2passwords",
+        }),
+        Templates::get_project_preview({
+            .title = "AntiReceiverBuzz",
+            .description = "Tiny app preventing unwanted noise on macOS with receivers & amplifiers.",
+            .location = "https://github.com/jacnils/AntiReceiverBuzz",
+        }),
     });
     content += Element{Tag::P, Property{"id", "more-projects-p"}, "<em>For more projects, see my GitHub.</em>"};
     content += Element{Tag::H1, Property{"id", "contact-h1"}, "Contact"};
     content += Element{Tag::P, Property{"id", "contact-p"}, "You can contact me using any of the following methods:"};
-    content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/mail.svg", .text = "Email me", .location = "mailto:jacob@jacobnilsson.com", .alt = "Email Logo"});
-    content += Templates::get_image_link_preview({.mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub", .location = "https://github.com/jacnils", .alt = "GitHub Logo"});
-    content += Templates::get_image_link_preview({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jacnils", .alt = "GitHub Logo"});
+    content += Templates::get_image_link_preview({
+        .mode = Templates::Mode::Any, .image_location = "/img/mail.svg", .text = "Email me",
+        .location = "mailto:jacob@jacobnilsson.com", .alt = "Email Logo"
+    });
+    content += Templates::get_image_link_preview({
+        .mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub",
+        .location = "https://github.com/jacnils", .alt = "GitHub Logo"
+    });
+    content += Templates::get_image_link_preview({
+        .mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub",
+        .location = "https://github.com/jacnils", .alt = "GitHub Logo"
+    });
     content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "YouTube", .location = "https://youtube.com/@jacobnilssoncom", .alt = "YouTube Logo"});
     content += Element{Tag::P, Property{"id", "contact-p-2"}, "<em>I also have a Discord. If you want to contact me on there, please email me first.</em>"};
 

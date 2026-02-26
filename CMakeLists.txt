@@ -38,7 +38,23 @@ set(PROJECT_SOURCE_FILES
 
 include_directories(include)
 
-find_package(bygg REQUIRED)
+find_package(bygg QUIET)
+if (NOT bygg_FOUND)
+    set(BYGG_BUILD_LIBXML2 OFF CACHE BOOL "Build libxml2 support in bygg")
+    set(BYGG_USE_LIBXML2 OFF CACHE BOOL "Enable libxml2 support in bygg")
+    set(BYGG_BUILD_CLI OFF CACHE BOOL "Build CLI application for bygg")
+    set(BYGG_BUILD_TESTS OFF CACHE BOOL "Build tests")
+    include(FetchContent)
+    FetchContent_Declare(bygg
+            GIT_REPOSITORY https://github.com/jacnils/bygg
+            GIT_TAG main
+    )
+    FetchContent_MakeAvailable(bygg)
+
+    if(TARGET bygg AND NOT TARGET bygg::bygg)
+        add_library(bygg::bygg ALIAS bygg)
+    endif()
+endif()
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 

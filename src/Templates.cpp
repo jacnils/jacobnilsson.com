@@ -68,19 +68,29 @@ bygg::HTML::Section Templates::get_generic_base_body() {
             },
         },
         Section{Tag::Div, Property{"id", "content"}, Property{"class", "content"},
-            Templates::get_top_notice({.background = "#feffd6", .color = "#721c24", .text = "🇸🇪 Webbsidan finns tillgänglig på svenska. <a href=\"/settings.html\">Ändra språk</a>.", .classes = "english no-lang", .button_onclick = "set_cookie('lang', 'en', 365);"}),
-            Templates::get_top_notice({.background = "#feffd6", .color = "#721c24", .text = "🇺🇸 The website is also available in English <a href=\"/settings.html\">Change language</a>.", .classes = "swedish no-lang", .button_onclick = "set_cookie('lang', 'sv', 365);"}),
             Templates::get_top_notice({
-                .background = "#003399",
-                .color = "#FFCC00",
+                .text = "🇸🇪 Webbsidan finns tillgänglig på svenska. <a href=\"/settings.html\">Ändra språk</a>.",
+                .color = "#721c24",
+                .background = "#feffd6",
+                .classes = "english no-lang", .button_onclick = "set_cookie('lang', 'en', 365);"
+            }),
+            Templates::get_top_notice({
+                .text = "🇺🇸 The website is also available in English <a href=\"/settings.html\">Change language</a>.",
+                .color = "#721c24",
+                .background = "#feffd6",
+                .classes = "swedish no-lang", .button_onclick = "set_cookie('lang', 'sv', 365);"
+            }),
+            Templates::get_top_notice({
                 .text = "The European Union might force me to tell you that I'm forcing cookies, a staple of the internet since the '90s, down your throat so that I can provide you with very basic features of my website such as language selection. That's your notice. And if you live in a sane country like Norway but happen to be a part of the same continent as morons, you may safely ignore this.",
+                .color = "#FFCC00",
+                .background = "#003399",
                 .classes = "eu english",
                 .button_onclick = "set_cookie('eu', 'true', 365);",
             }),
             Templates::get_top_notice({
-                .background = "#003399",
-                .color = "#FFCC00",
                 .text = "Europeiska unionen kan tvinga mig att berätta för dig att jag påtvingar kakor, en stapelvara på internet sedan 90-talet, ner i halsen på dig så att jag kan erbjuda dig grundläggande funktioner på min webbplats som språkval. Det är din notis. Och om du bor i ett sunt land som Norge och råkar befinna dig på samma kontinent som idioter, kan du ignorera detta meddelande.",
+                .color = "#FFCC00",
+                .background = "#003399",
                 .classes = "eu swedish",
                 .button_onclick = "set_cookie('eu', 'true', 365);",
             }),
@@ -162,8 +172,21 @@ bygg::HTML::Section Templates::get_image_link_preview(const ImageLinkPreview& il
 bygg::HTML::Section Templates::get_spoiler(const bygg::HTML::Section& content) {
     using namespace bygg::HTML;
     return Section{Tag::Empty_No_Formatting,
-            Section{Tag::Div, Property{"class", "spoiler no-select"}, Property{"id", "spoiler-" + std::to_string(spoiler_id)}, content},
-            Element{Tag::Button, Properties(Property{"onclick", "toggle_spoiler('spoiler-" + std::to_string(spoiler_id) + "', 'spoiler-button-" + std::to_string(spoiler_id) + "')"}, Property{"class", "spoiler-button"}, Property{"id", "spoiler-button-" + std::to_string(spoiler_id++)}), "Show Content"},
+            Section{
+                Tag::Div, Property{"class", "spoiler no-select"},
+                Property{"id", "spoiler-" + std::to_string(spoiler_id)}, content
+            },
+            Element{
+                Tag::Button,
+                Properties(Property{
+                               "onclick",
+                               "toggle_spoiler('spoiler-" + std::to_string(spoiler_id) + "', 'spoiler-button-" +
+                               std::to_string(spoiler_id) + "')"
+                           }, Property{"class", "spoiler-button"}, Property{
+                               "id", "spoiler-button-" + std::to_string(spoiler_id++)
+                           }),
+                "Show Content"
+            },
     };
 }
 

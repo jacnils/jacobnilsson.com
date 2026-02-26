@@ -41,6 +41,7 @@ static const std::vector<std::tuple<std::string, std::string>> js_files{
 // Tuple format: {output file, HTML section, page properties, generate header/footer}
 static const std::vector<std::tuple<std::string, bygg::HTML::Section, PageProperties, bool>> website_tree{
     {"out/index.html", Sites::get_index_site(), PageProperties{.lang = "en"}, true},
+    {"out/about.html", Sites::get_about_me_site(), PageProperties{.lang = "en"}, true},
     {"out/settings.html", Sites::get_settings_site(), PageProperties{.lang = "en"}, true},
     {"out/blog.html", Sites::get_blog_site(), PageProperties{.lang = "en"}, true},
     {"out/blog/macos-passwords-app-crash-bug.html", Sites::get_macos_passwords_app_crash_bug(), PageProperties{.lang = "en"}, true},
@@ -221,9 +222,11 @@ int main(int argc, char** argv) {
         endpoint.close();
 
         // try uglifyjs
+        /*
         if (std::system("command -v npx > /dev/null") == 0) {
             std::system(std::string("npx uglifyjs " + std::get<0>(it) + " --output " + std::get<0>(it) + " --compress --mangle > /dev/null").c_str()); // NOLINT
         }
+        */
     }
 
     if (argc > 1 && std::string(argv[1]) == "no-open") {
@@ -243,4 +246,6 @@ int main(int argc, char** argv) {
         std::cerr << "Operating system not supported" << std::endl;
 #endif
     }
+
+    return EXIT_SUCCESS;
 }

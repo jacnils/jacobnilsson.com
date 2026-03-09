@@ -5,7 +5,6 @@
 #include <Endpoint.hpp>
 #include <Sites.hpp>
 #include <Stylesheets.hpp>
-#include <Scripts.hpp>
 #include <Templates.hpp>
 #include <bygg/bygg.hpp>
 
@@ -24,6 +23,8 @@ static const std::vector<std::pair<std::string, std::string>> copy_files{
     {"img/mail.svg", "out/img/mail.svg"},
     {"img/logo.png", "out/img/logo.png"},
     {"img/favicon.ico", "out/img/favicon.ico"},
+    {"js/gd.js", "out/js/gd.js"},
+    {"js/script.js", "out/js/script.js"},
 };
 
 // CSS files to generate from bygg::CSS::Stylesheet
@@ -33,13 +34,12 @@ static const std::vector<std::tuple<std::string, bygg::CSS::Stylesheet>> css_fil
 
 // JavaScript files to generate
 // Note: May also be used to write strings to files
-static const std::vector<std::tuple<std::string, std::string>> js_files{
-    {"out/js/script.js", Scripts::get_script()},
-};
+static const std::vector<std::tuple<std::string, std::string>> js_files{};
 
 // Website tree to generate
 // Tuple format: {output file, HTML section, page properties, generate header/footer}
 static const std::vector<std::tuple<std::string, bygg::HTML::Section, PageProperties, bool>> website_tree{
+    {"out/extreme-notes.html", Sites::get_extreme_notes_site(), PageProperties{.lang = "en"}, true},
     {"out/index.html", Sites::get_index_site(), PageProperties{.lang = "en"}, true},
     {"out/about.html", Sites::get_about_me_site(), PageProperties{.lang = "en"}, true},
     {"out/settings.html", Sites::get_settings_site(), PageProperties{.lang = "en"}, true},
@@ -71,6 +71,11 @@ int main(int argc, char** argv) {
             if (!std::filesystem::exists(std::filesystem::path(second).parent_path())) {
                 throw std::runtime_error("Failed to create directory: " + std::filesystem::path(second).parent_path().string());
             }
+        }
+
+        // since msvc is retarded as usual
+        if (std::filesystem::is_regular_file(second)) {
+            std::filesystem::remove(second);
         }
 
         std::error_code ec;

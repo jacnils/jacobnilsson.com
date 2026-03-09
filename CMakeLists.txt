@@ -27,12 +27,10 @@ endif()
 set(PROJECT_SOURCE_FILES
         include/Sites.hpp
         include/Stylesheets.hpp
-        include/Scripts.hpp
         include/Templates.hpp
         src/Sites.cpp
         src/Templates.cpp
         src/Stylesheets.cpp
-        src/Scripts.cpp
         src/main.cpp
 )
 

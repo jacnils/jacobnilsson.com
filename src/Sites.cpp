@@ -22,6 +22,20 @@ bygg::HTML::Section Sites::get_about_me_site() {
     return container;
 }
 
+bygg::HTML::Section Sites::get_extreme_notes_site() {
+    using namespace bygg::HTML;
+    Section container = Templates::get_generic_base_body();
+    Section& content = container.at_section(body_div_id);
+
+    content += Element{Tag::H1, "Extreme Demon Completions"};
+    content += Element{Tag::P, "This page provides a list of my completed Geometry Dash Extreme Demon achievements. Click on the levels to see more information. All of this data is taken from my spreadsheet."};
+    content += Element{Tag::Em, "Fair warning: Some of the level notes feature informal language."};
+
+    Section& footer = container.back_section();
+    footer += Element{Tag::Script, Property{"src", "/js/gd.js"}};
+
+    return container;
+}
 
 bygg::HTML::Section Sites::get_index_site() {
     using namespace bygg::HTML;
@@ -61,6 +75,8 @@ bygg::HTML::Section Sites::get_index_site() {
         }),
     });
     content += Element{Tag::P, Property{"id", "more-projects-p"}, "<em>For more projects, see my GitHub.</em>"};
+    content += Element{Tag::H1, Property{"id", "gmd-h1"}, "Geometry Dash"};
+    content += Element{Tag::P, Property{"id", "gmd-p"}, "I also play Geometry Dash and have 65+ extreme demons completed. <a href=\"/extreme-notes.html\">Learn more.</a>"};
     content += Element{Tag::H1, Property{"id", "contact-h1"}, "Contact"};
     content += Element{Tag::P, Property{"id", "contact-p"}, "You can contact me using any of the following methods:"};
     content += Templates::get_image_link_preview({
@@ -75,7 +91,8 @@ bygg::HTML::Section Sites::get_index_site() {
         .mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub",
         .location = "https://github.com/jacnils", .alt = "GitHub Logo"
     });
-    content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "YouTube", .location = "https://youtube.com/@jacobnilssoncom", .alt = "YouTube Logo"});
+    content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "Geometry Dash YouTube", .location = "https://youtube.com/@jacobnilssongd", .alt = "YouTube Logo"});
+    content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "YouTube", .location = "https://youtube.com/@jacnils", .alt = "YouTube Logo"});
     content += Element{Tag::P, Property{"id", "contact-p-2"}, "<em>I also have a Discord. If you want to contact me on there, please email me first.</em>"};
 
     Section& swedish_content = container.at_section(swedish_body_div_id);
@@ -90,19 +107,26 @@ bygg::HTML::Section Sites::get_index_site() {
     swedish_content += Element{Tag::P, Property{"id", "sv-my-projects-p"}, "Här är några av projekten jag har arbetat på:"};
     swedish_content += Templates::get_grid({
         Templates::get_project_preview({.title = "bygg", .description = "En komponentbaserad HTML/CSS-byggare för C++. Används till bland annat denna webbsidan.", .location = "/bygg.html"}),
-        Templates::get_project_preview({.title = "biner", .description = "Verktyg för att kombinera och separera textfiler", .location = "https://github.com/jacnils/biner"}),
+        Templates::get_project_preview({
+            .title = "netkit",
+            .description = "C99 and C++23 nätverksbibliotek.",
+            .location = "https://github.com/jacnils/netkit",
+        }),
     });
     swedish_content += Templates::get_grid({
         Templates::get_project_preview({.title = "pass2passwords", .description = "GNU Pass till macOS Lösenord konverterare.", .location = "https://github.com/jacnils/pass2passwords"}),
         Templates::get_project_preview({.title = "AntiReceiverBuzz", .description = "Liten app som förhindrar oönskat ljud på macOS med mottagare och förstärkare.", .location = "https://github.com/jacnils/AntiReceiverBuzz"}),
     });
     swedish_content += Element{Tag::P, Property{"id", "sv-more-projects-p"}, "<em>För fler projekt, se min Git-server och GitHub.</em>"};
+    swedish_content += Element{Tag::H1, Property{"id", "sv-gmd-h1"}, "Geometry Dash"};
+    swedish_content += Element{Tag::P, Property{"id", "sv-gmd-p"}, "Jag spelar också Geometry Dash och har 65+ avklarade extreme demons. <a href=\"/extreme-notes.html\">Läs mer.</a>"};
     swedish_content += Element{Tag::H1, Property{"id", "sv-contact-h1"}, "Kontakt"};
     swedish_content += Element{Tag::P, Property{"id", "sv-contact-p"}, "Du kan kontakta mig på följande sätt:"};
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/mail.svg", .text = "E-post", .location = "mailto:jacob@jacobnilsson.com", .alt = "Email Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Light, .image_location = "/img/github-black.svg", .text = "GitHub", .location = "https://github.com/jacnils", .alt = "GitHub Logo"});
     swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Dark, .image_location = "/img/github-white.svg", .text = "GitHub", .location = "https://github.com/jacnils", .alt = "GitHub Logo"});
-    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "YouTube", .location = "https://youtube.com/@jacobnilssoncom", .alt = "YouTube Logo"});
+    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "Geometry Dash YouTube", .location = "https://youtube.com/@jacobnilssongd", .alt = "YouTube Logo"});
+    swedish_content += Templates::get_image_link_preview({.mode = Templates::Mode::Any, .image_location = "/img/youtube.svg", .text = "YouTube", .location = "https://youtube.com/@jacnils", .alt = "YouTube Logo"});
     swedish_content += Element{Tag::P, Property{"id", "sv-contact-p-2"}, "<em>Jag har också en Discord. Om du vill kontakta mig där, vänligen skicka ett e-postmeddelande först.</em>"};
 
     return container;

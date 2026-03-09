@@ -314,6 +314,44 @@ bygg::CSS::Stylesheet Stylesheets::get_style() {
                     {"display", "none"},
                 },
             },
+            Element{"levels", Type::Id,
+                Properties{
+                    Property{"display", "grid"},
+                    Property{"grid-template-columns", "repeat(auto-fill, 300px)"},
+                    Property{"gap", "20px"},
+                    Property{"padding", "20px"},
+                }
+            },
+            Element{"level-card", Type::Class,
+                Properties{
+                    Property{"border-radius", "10px"},
+                    Property{"overflow", "hidden"},
+                    Property{"cursor", "pointer"},
+                    Property{"background", ColorFormatter(from_hex(theme.preview_background)).get(bygg::CSS::ColorFormatting::Rgb)},
+                }
+            },
+            Element{"thumb", Type::Class,
+                Properties{
+                    Property{"width", "100%"},
+                    Property{"display", "block"},
+                }
+            },
+            Element{"main", Type::Class,
+                Properties{
+                    Property{"padding", "10px"},
+                }
+            },
+            Element{"details", Type::Class,
+                Properties{
+                    Property{"padding", "10px"},
+                    Property{"display", "none"},
+                }
+            },
+            Element{"level-card.open .details", Type::Class,
+                Properties{
+                    Property{"display", "block"},
+                }
+            },
             /* For mobile */
             Element{"media (max-width: 600px)", Type::Rule,
                 Element{

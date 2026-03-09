@@ -19,6 +19,7 @@ namespace Sites {
     bygg::HTML::Section get_the_sad_state_of_music_hoarding_on_ios();
     bygg::HTML::Section get_reassigning_your_email_the_hidden_vulnerability();
     bygg::HTML::Section get_bygg_site();
+    bygg::HTML::Section get_extreme_notes_site();
 }
 
 #endif //SITES_HPP

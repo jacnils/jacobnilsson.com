@@ -44,7 +44,7 @@ bygg::HTML::Section Templates::get_generic_base_body() {
         Section{Tag::Div, make_properties(Property{"class", "top-bar"}, Property{"id", "topBar"}),
             Section{Tag::Div, Property{"class", "header dark"},
                 Section{Tag::A, Property{"href", "/"},
-                    Element{Tag::Img, make_properties(Property{"id", "logo"}, Property{"src", "/img/logo.png"}, Property{"style", "height:100px;width:100px;filter:invert(1);vertical-align:middle;padding:10px;"})},
+                    Element{Tag::Img, make_properties(Property{"id", "logo"}, Property{"src", "/img/logo.png"}, Property{"style", "height:100px;width:100px;vertical-align:middle;padding:10px;"})},
                     Element{Tag::Empty_No_Formatting, "jacobnilsson.com"},
                 },
             },

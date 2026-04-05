@@ -7,7 +7,7 @@ const headers = [
     "Decoration Score","Gameplay Score","Music Score","Score",
     "Proof (GDDL)","Rating (GDDL)","NLW Opinion","Worst Fail",
     "Attempts (from 0%)","Attempts (practice)","Playtime (from 0%)",
-    "Playtime (practice)","Note"
+    "Playtime (practice)","Note","Position"
 ];
 
 const sortFields = {
@@ -16,7 +16,8 @@ const sortFields = {
     "Gameplay": "Gameplay Score",
     "Music": "Music Score",
     "Overall": "Score",
-    "Tier": "Rating (GDDL)"
+    "Tier": "Rating (GDDL)",
+    "Position": "Position"
 };
 
 let entries = [];
@@ -40,7 +41,6 @@ function rowToObject(row) {
 }
 
 function createControls() {
-
     const container = document.getElementById("content");
 
     const controls = document.createElement("div");
@@ -112,6 +112,7 @@ function render(entries) {
 
         <div class="details">
             <p><b>Enjoyment:</b> ${level["Experience/Enjoyment (GDDL)"]}/100</p>
+            <p><b>Placement:</b> ${level["Position"]}</p>
             <p><b>Decoration:</b> ${level["Decoration Score"]}/100</p>
             <p><b>Gameplay:</b> ${level["Gameplay Score"]}/100</p>
             <p><b>Music:</b> ${level["Music Score"]}/100</p>
@@ -131,7 +132,6 @@ function render(entries) {
 }
 
 function update() {
-
     let filtered = [...entries];
 
     if (tierFilter !== null) {
@@ -154,7 +154,6 @@ function update() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
     createControls();
 
     loadSheet().then(rows => {

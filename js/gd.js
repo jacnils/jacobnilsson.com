@@ -3,11 +3,11 @@ const SHEET_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/
 const GDDL_MAX_TIER = 39;
 
 const headers = [
-    "Level","Level ID","Completed on","Experience/Enjoyment (GDDL)",
+    "Level","Level ID","Position","Completed on","Experience/Enjoyment (GDDL)",
     "Decoration Score","Gameplay Score","Music Score","Score",
     "Proof (GDDL)","Rating (GDDL)","NLW Opinion","Worst Fail",
     "Attempts (from 0%)","Attempts (practice)","Playtime (from 0%)",
-    "Playtime (practice)","Note","Position"
+    "Playtime (practice)","Note"
 ];
 
 const sortFields = {

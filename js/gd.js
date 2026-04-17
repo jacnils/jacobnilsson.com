@@ -21,7 +21,7 @@ const sortFields = {
 };
 
 let entries = [];
-let currentSort = null;
+let currentSort = sortFields["Overall"];
 let ascending = false;
 let tierFilter = null;
 
